@@ -1,0 +1,40 @@
+/* Estilo para as abas */
+.tab {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f1f1f1;
+  }
+  
+  /* Estilo para os botões das abas */
+  .tab button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    transition: 0.3s;
+    font-size: 18px;
+    color: black;
+    margin: 0 10px;
+    border-bottom: 3px solid transparent;
+  }
+  
+  /* Mudança de cor quando o botão da aba é clicado */
+  .tab button.active {
+    border-bottom: 3px solid black;
+    color: gray;
+  }
+  
+  /* Conteúdo das abas */
+  .tabcontent {
+    display: none;
+    padding: 20px;
+    border-top: 3px solid black;
+    width: 100%;
+  }
+  
+  /* Estilo para o conteúdo ativo */
+  .tabcontent.active {
+    display: block;
+  }
