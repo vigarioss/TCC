@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="sidebar.css">
+<link rel="stylesheet" href="abas.css">
+<title>Site da Facção</title>
+<style>
+
+</style>
+</head>
+<body>
+
+<div class="tab">
+  <button class="tablinks" onclick="openTab(event, 'tab1')" id="defaultOpen">Cadastro</button>
+  <button class="tablinks" onclick="openTab(event, 'tab2')">2</button>
+  <button class="tablinks" onclick="openTab(event, 'tab3')">3</button>
+</div>
+
+<div id="tab1" class="tabcontent active">
+  <h3>Conteúdo da Facção 1</h3>
+  <p>Aqui você pode adicionar o conteúdo da sua primeira facção.</p>
+  <div class="sidebar">
+    <ul class="nav">
+    
+      <li class="active">
+        <a href="#" class="menu-link">
+          <span class="icon-home"></span>
+          <span class="text">Home</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="menu-link">
+          <span class="icon-users"></span>
+          <span class="text">Usuários</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="menu-link">
+           <span class="icon-play"></span>
+            <span class="text">Portfolio</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="menu-link">
+           <span class="icon-cog"></span>
+            <span class="text">Serviços</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="menu-link">
+           <span class="icon-mail"></span>
+            <span class="text">Contato</span>
+        </a>
+      </li>
+    
+    </ul>
+  </div><!--sidebar-->
+</div>
+
+<div id="tab2" class="tabcontent">
+  <h3>Conteúdo da Facção 2</h3>
+  <p>Aqui você pode adicionar o conteúdo da sua segunda facção.</p>
+</div>
+
+<div id="tab3" class="tabcontent">
+  <h3>Conteúdo da Facção 3</h3>
+  <p>Aqui você pode adicionar o conteúdo da sua terceira facção.</p>
+</div>
+
+<script>
+// Função para abrir as abas
+function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].classList.remove("active");
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].classList.remove("active");
+    }
+    document.getElementById(tabName).classList.add("active");
+    evt.currentTarget.classList.add("active");
+  }
+  
+  // Abra a aba padrão ao carregar a página
+  document.getElementById("defaultOpen").click();
+</script>
+
+</body>
+</html>
