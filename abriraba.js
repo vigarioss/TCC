@@ -1,4 +1,4 @@
-// Função para abrir as abas
+/*  Função para abrir as abas */
 function openTab(evt, tabName) {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");
@@ -13,5 +13,5 @@ function openTab(evt, tabName) {
     evt.currentTarget.classList.add("active");
   }
   
-  // Abra a aba padrão ao carregar a página
+  /*  Abra a aba padrão ao carregar a página */ 
   document.getElementById("defaultOpen").click();
