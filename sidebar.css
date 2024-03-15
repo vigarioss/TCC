@@ -2,9 +2,8 @@
  
     width: 300px;
     position: fixed; /* Mudança: posição fixa */
-    top: 0; /* Mudança: fixar no topo */
+    top: 5; /* Mudança: fixar no topo */
     left: 0; /* Mudança: fixar à esquerda */
-    box-shadow: 1px 3px 3px 3px black;
     transition: all 0.5s linear;
     
   }
