@@ -11,7 +11,8 @@ function openTab(evt, tabName) {
     }
     document.getElementById(tabName).classList.add("active");
     evt.currentTarget.classList.add("active");
+    
   }
   
   /*  Abra a aba padrão ao carregar a página */ 
-  document.getElementById("defaultOpen").click();
+  document.getElementById("login").click();

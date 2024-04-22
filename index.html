@@ -1,29 +1,68 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="sidebar.css">
-<link rel="stylesheet" href="abas.css">
-<title>Site da Facção</title>
-<style>
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Inicial</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #050505;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
-<script type="text/javascript" src="abriraba.js">
-
-</script>
 <body>
+<<<<<<< Updated upstream
 
 <div class="tab">
-  <button class="tablinks" onclick="openTab(event, 'tab1')" id="defaultOpen">Cadastro</button>
+  <button class="tablinks" onclick="openTab(event, 'tab1')" id="login">Login</button>
   <button class="tablinks" onclick="openTab(event, 'tab2')">2</button>
-  <button class="tablinks" onclick="openTab(event, 'tab3')">3</button>
+  <button class="tablinks" onclick="openTab(event, 'tab3')" id="cadastrar">Cadastre-se<button>
 </div>
 
 <div id="tab1" class="tabcontent active">
-  <h3>Conteúdo da Facção 1</h3>
-  <p>Aqui você pode adicionar o conteúdo da sua primeira facção.</p>
+  <h3>Login</h3>
+  <!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <h2>Login</h2>
+    <form action="/login" method="post">
+        <label for="username">Nome:</label><br>
+        <input type="text" id="username" name="username" required><br>
+        <label for="password">Senha:</label><br>
+        <input type="password" id="password" name="password" required><br><br>
+        <input type="submit" value="Login">
+    </form>
+    <p>Não tem uma conta? <a href="">Cadastre-se</a></p>
+    
+</body>
+</div>
+
+</html>
+
+</body>
+</html>
+
   <!-- caso for usado 
   <div class="sidebar">
     <ul class="nav">
@@ -64,17 +103,43 @@
       </li>
     
     </ul>
-  </div>  sidebar--> 
+  </div>  
+  
+  Gerenciamento de contas
+  
+  
+  
+  
+  
+  
+  
+  sidebar--> 
 </div>
 
 <div id="tab2" class="tabcontent">
-  <h3>Conteúdo da Facção 2</h3>
-  <p>Aqui você pode adicionar o conteúdo da sua segunda facção.</p>
+  
 </div>
 
-<div id="tab3" class="tabcontent">
-  <h3>Conteúdo da Facção 3</h3>
-  <p>Aqui você pode adicionar o conteúdo da sua terceira facção.</p>
+<div id="cadastrar" class="tabcontent">
+ 
+    <h2>Cadastro</h2>
+    <form>
+        <label for="signup-username">Usuário:</label><br>
+        <input type="text" id="signup-username" name="signup-username"><br>
+        <label for="signup-password">Senha:</label><br>
+        <input type="password" id="signup-password" name="signup-password"><br><br>
+        <input type="submit" value="Cadastrar">
+    </form>
 </div>
+  </body>
+  </html>
+  
+</div>
+=======
+    <h1>Bem-vindo ao Nosso Site</h1>
+    <a href="login.html" class="btn">Login</a>
+    <a href="cadastro.html" class="btn">Cadastro</a>
+    <a href="configuracoes.html" class="btn">Configurações</a>
+>>>>>>> Stashed changes
 </body>
 </html>
