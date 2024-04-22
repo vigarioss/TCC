@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            color: #333; 
+        }
+        .container {
+            margin: 50px auto;
+            width: 300px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            text-decoration: none;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-light {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+        .btn-dark {
+            background-color: #333;
+            color: #fff; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Configurações</h2>
+        <button class="btn btn-light" onclick="mudarTema('light')">Modo Claro</button>
+        <button class="btn btn-dark" onclick="mudarTema('dark')">Modo Escuro</button>
+    </div>
+
+    <script>
+        function mudarTema(tema) {
+            if (tema === 'light') {
+                document.body.style.backgroundColor = '#f2f2f2';
+                document.body.style.color = '#333'; 
+            } else if (tema === 'dark') {
+                document.body.style.backgroundColor = '#333';
+                document.body.style.color = '#fff';
+            }
+        }
+    </script>
+</body>
+</html>
