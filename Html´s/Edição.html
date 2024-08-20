@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Perfil</title>
+    <link rel="stylesheet" href="Edição.css">
+</head>
+<body>
+    <div class="edit-container">
+        <h1>Editar Login</h1>
+        <form action="/update-profile" method="POST">
+            <label for="username">Nome de Usuário:</label>
+            <input type="text" id="username" name="username" value="usuário" required>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="exemplo@dominio.com" required>
+
+            <label for="password">Nova Senha:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Atualizar Login</button>
+        </form>
+    </div>
+</body>
+</html>
