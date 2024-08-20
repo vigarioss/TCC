@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // Simulação de autenticação
         if (username === "admin" && password === "admin") {
             // Autenticação bem-sucedida, redirecionar para a página do menu principal
-            window.location.href = "menu_principal.html";
+            window.location.href = "PósLogin.html";
         } else {
             // Autenticação falhou, exibir uma mensagem de erro
             alert("Nome de usuário ou senha incorretos.");
