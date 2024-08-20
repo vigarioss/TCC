@@ -5,22 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tela de Login</title>
     <link rel="stylesheet" href="../Css/Login.css">
-    <script src="../Scripts/Login.js"></script>
 </head>
 <body>
     <div class="login-container">
-        <h1>Login</h1>
-        <form action="/login" method="post">
-            <label for="username">Nome de usuário</label>
-            <input type="text" id="username" name="username" required>
+        <h1 id="loginTitle">Login</h1>
+        <div id="roleSelection" class="role-selection">
+            <button class="role-btn" data-role="employee">Funcionário</button>
+            <button class="role-btn" data-role="manager">Gerente</button>
+        </div>
+        <div id="loginForm" class="form-container" style="display: none;">
+            <form action="#" method="post">
+                <label for="username">Nome de usuário</label>
+                <input type="text" id="username" name="username" required>
 
-            <label for="password">Senha</label>
-            <input type="password" id="password" name="password" required>
+                <label for="password">Senha</label>
+                <input type="password" id="password" name="password" required>
 
-            <button type="submit">Entrar</button>
-        </form>
-        <button id="deleteAccount">Excluir Conta</button>
+                <button type="submit">Entrar</button>
+            </form>
+        </div>
+        <div id="welcomeMessage" style="display: none;"></div>
+        <button id="deleteAccount" style="display: none;">Excluir Conta</button>
     </div>
-    <script src="script.js"></script>
+    <script src="../Scripts/Login.js"></script>
 </body>
 </html>

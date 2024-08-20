@@ -16,20 +16,43 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 300px;
     text-align: center;
-    margin-top: 50px; 
 }
 
-.login-container h1 {
+#loginTitle {
     margin-bottom: 20px;
 }
 
-.login-container label {
+.role-selection {
+    margin-bottom: 20px;
+}
+
+.role-btn {
+    width: 120px;
+    padding: 10px;
+    margin: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.role-btn:hover {
+    background-color: #45a049;
+}
+
+.form-container {
+    text-align: center;
+}
+
+.form-container label {
     display: block;
     text-align: left;
     margin-bottom: 5px;
 }
 
-.login-container input {
+.form-container input {
     width: 280px;
     padding: 10px;
     margin-bottom: 10px;
@@ -38,8 +61,7 @@ body {
     background-color: white;
 }
 
-.login-container button[type="submit"],
-.login-container button#deleteAccount {
+.form-container button[type="submit"] {
     width: 100%;
     padding: 10px;
     background-color: #4CAF50;
@@ -47,10 +69,23 @@ body {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    margin-top: 10px; 
 }
 
-.login-container button[type="submit"]:hover,
-.login-container button#deleteAccount:hover {
+.form-container button[type="submit"]:hover {
     background-color: #45a049;
+}
+
+#welcomeMessage {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#deleteAccount {
+    margin-top: 10px;
+    background-color: #f44336;
+}
+
+#deleteAccount:hover {
+    background-color: #e53935;
 }
