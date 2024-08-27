@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciamento de Linhas</title>
+    <title>Linhas</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         /* Estilos para o container principal */
@@ -39,30 +39,34 @@
         .actions button {
             margin: 0 5px;
             padding: 10px 20px;
-            border: none;
-            color: white;
+            border: 1px solid #000; /* Borda preta fina */
+            background-color: #fff; /* Cor branca */
+            color: black; /* Texto preto para contraste */
             cursor: pointer;
             border-radius: 5px;
             font-size: 14px;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         .actions .edit-btn {
-            background-color: #ff9800;
+            background-color: #fff;
         }
         .actions .edit-btn:hover {
             background-color: #f57c00;
+            color: white; /* Texto branco no hover */
         }
         .actions .delete-btn {
-            background-color: #f44336;
+            background-color: #fff;
         }
         .actions .delete-btn:hover {
             background-color: #e53935;
+            color: white; /* Texto branco no hover */
         }
         .actions .report-btn {
-            background-color: #2196F3;
+            background-color: #fff;
         }
         .actions .report-btn:hover {
             background-color: #1976D2;
+            color: white; /* Texto branco no hover */
         }
         .filter-input {
             width: 100%;
@@ -182,10 +186,10 @@
 </head>
 <body>
     <div class="container">
-        <h1>Gerenciamento de Linhas</h1>
+        <h1>Linhas</h1>
         <div class="button-container">
             <button class="add-button" onclick="openModal()">Adicionar Linha</button>
-            <button class="back-to-home" onclick="window.location.href='index.html'">Voltar à Tela Inicial</button>
+            <button class="back-to-home" onclick="window.location.href='Gerente.html'">Voltar</button>
         </div>
         <input type="text" id="filterInput" class="filter-input" placeholder="Filtrar linhas...">
         <table>
@@ -195,6 +199,7 @@
                     <th>Tipo</th>
                     <th>Tamanho</th>
                     <th>Quantidade</th>
+                    <th>Estoque</th>
                     <th>Ações</th>
                 </tr>
             </thead>
@@ -216,8 +221,8 @@
                     <div class="form-group">
                         <label for="tipoLinha">Tipo:</label>
                         <select id="tipoLinha" required>
-                            <option value="Poliéster">Poliéster</option>
-                            <option value="Fibra">Fibra</option>
+                            <option value="poliéster">Poliéster</option>
+                            <option value="fibra">Fibra</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -227,6 +232,10 @@
                     <div class="form-group">
                         <label for="quantidadeLinha">Quantidade:</label>
                         <input type="number" id="quantidadeLinha" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="estoqueLinha">Estoque:</label>
+                        <input type="number" id="estoqueLinha" required>
                     </div>
                     <button type="button" class="add-button" onclick="salvarLinha()">Salvar</button>
                 </form>
@@ -258,11 +267,12 @@
 
     <script>
         const linhas = [
-            { nome: 'Linha A', tipo: 'Poliéster', tamanho: 200, quantidade: 50 },
-            { nome: 'Linha B', tipo: 'Fibra', tamanho: 150, quantidade: 30 }
+            { nome: 'Linha A', tipo: 'Poliéster', tamanho: 100, quantidade: 50, estoque: 30 },
+            { nome: 'Linha B', tipo: 'Fibra', tamanho: 120, quantidade: 40, estoque: 20 }
         ];
+
         let editIndex = -1;
-        let reports = [];
+        const reports = [];
 
         function loadLinhas() {
             const linhaTableBody = document.getElementById('linhaTableBody');
@@ -275,7 +285,8 @@
                     <td>${linha.tipo}</td>
                     <td>${linha.tamanho}</td>
                     <td>${linha.quantidade}</td>
-                    <td>
+                    <td>${linha.estoque}</td>
+                    <td class="actions">
                         <button class="edit-btn" onclick="editLinha(${index})">Editar</button>
                         <button class="delete-btn" onclick="deleteLinha(${index})">Excluir</button>
                         <button class="report-btn" onclick="enviarRelatorio(true)">Enviar Relatório</button>
@@ -301,11 +312,12 @@
             const tipo = document.getElementById('tipoLinha').value;
             const tamanho = document.getElementById('tamanhoLinha').value;
             const quantidade = document.getElementById('quantidadeLinha').value;
+            const estoque = document.getElementById('estoqueLinha').value;
 
             if (editIndex === -1) {
-                linhas.push({ nome, tipo, tamanho, quantidade });
+                linhas.push({ nome, tipo, tamanho, quantidade, estoque });
             } else {
-                linhas[editIndex] = { nome, tipo, tamanho, quantidade };
+                linhas[editIndex] = { nome, tipo, tamanho, quantidade, estoque };
             }
 
             loadLinhas();
@@ -319,6 +331,7 @@
             document.getElementById('tipoLinha').value = linha.tipo;
             document.getElementById('tamanhoLinha').value = linha.tamanho;
             document.getElementById('quantidadeLinha').value = linha.quantidade;
+            document.getElementById('estoqueLinha').value = linha.estoque;
             document.getElementById('addLinhaModal').style.display = 'block';
             document.getElementById('modalTitle').textContent = 'Editar Linha';
         }
@@ -371,20 +384,6 @@
                 openRelatorioModal();
             }
         }
-
-        document.getElementById('filterInput').addEventListener('input', function() {
-            const filter = this.value.toLowerCase();
-            const rows = document.querySelectorAll('#linhaTableBody tr');
-            rows.forEach(row => {
-                const cells = row.getElementsByTagName('td');
-                const nome = cells[0].textContent.toLowerCase();
-                if (nome.indexOf(filter) > -1) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        });
 
         window.onload = loadLinhas;
     </script>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listagem de Máquinas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+        .button {
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            margin: 0 5px;
+            border: none;
+        }
+        .button-add {
+            background-color: #4CAF50;
+            font-weight: bold;
+        }
+        .button-add:hover {
+            background-color: #45a049;
+        }
+        .button-back {
+            background-color: #2196F3;
+        }
+        .button-back:hover {
+            background-color: #1e88e5;
+        }
+        .button-edit {
+            background-color: #FFC107;
+        }
+        .button-edit:hover {
+            background-color: #ffb300;
+        }
+        .button-delete {
+            background-color: #F44336;
+        }
+        .button-delete:hover {
+            background-color: #e53935;
+        }
+        .button-report {
+            background-color: #9C27B0;
+        }
+        .button-report:hover {
+            background-color: #8e24aa;
+        }
+
+        /* Estilos do Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .add-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        .add-button:hover {
+            background-color: #45a049;
+        }
+        .back-to-home {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .back-to-home:hover {
+            background-color: #1e88e5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Listagem de Máquinas</h1>
+        <table id="machinesTable">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Data de Entrada</th>
+                    <th>Data de Saída</th>
+                    <th>Emprestada</th>
+                    <th>Quantidade no Estoque</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- As linhas serão adicionadas aqui dinamicamente -->
+            </tbody>
+        </table>
+        <div class="button-container">
+            <button class="button button-add" onclick="openAddMachine()">Adicionar</button>
+            <button class="button button-edit" onclick="openEditMachine()">Editar</button>
+            <button class="button button-delete" onclick="deleteMachine()">Excluir</button>
+            <button class="button button-report" onclick="generateReport()">Relatório</button>
+            <button class="button button-back" onclick="window.location.href='Gerente.html'">Voltar</button>
+        </div>
+    </div>
+
+    <!-- Modal para Adicionar Máquina -->
+    <div id="addMachineModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle">Adicionar Máquina</h2>
+            <form id="addMachineForm">
+                <div class="form-group">
+                    <label for="machineName">Nome:</label>
+                    <input type="text" id="machineName" required>
+                </div>
+                <div class="form-group">
+                    <label for="entryDate">Data de Entrada:</label>
+                    <input type="date" id="entryDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="exitDate">Data de Saída:</label>
+                    <input type="date" id="exitDate">
+                </div>
+                <div class="form-group">
+                    <label for="borrowed">Emprestada:</label>
+                    <select id="borrowed" required>
+                        <option value="true">Sim</option>
+                        <option value="false">Não</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="stock">Quantidade no Estoque:</label>
+                    <input type="number" id="stock" required>
+                </div>
+                <button type="button" class="add-button" onclick="saveMachine()">Salvar</button>
+                <button type="button" class="back-to-home" onclick="closeModal()">Voltar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Inclua o SDK do Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
+
+    <script>
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "SUA_API_KEY",
+            authDomain: "SEU_PROJETO.firebaseapp.com",
+            databaseURL: "https://SEU_PROJETO.firebaseio.com",
+            projectId: "SEU_PROJETO",
+            storageBucket: "SEU_PROJETO.appspot.com",
+            messagingSenderId: "SEU_MESSAGING_SENDER_ID",
+            appId: "SEU_APP_ID"
+        };
+
+        // Inicialize o Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        function loadMachines() {
+            const machinesRef = database.ref('machines');
+            machinesRef.once('value').then((snapshot) => {
+                const tableBody = document.querySelector('#machinesTable tbody');
+                tableBody.innerHTML = '';
+
+                snapshot.forEach((childSnapshot) => {
+                    const data = childSnapshot.val();
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${data.name}</td>
+                        <td>${data.entryDate}</td>
+                        <td>${data.exitDate || 'N/A'}</td>
+                        <td>${data.borrowed ? 'Sim' : 'Não'}</td>
+                        <td>${data.stock}</td>
+                        <td>
+                            <button class="button button-edit" onclick="openEditMachine('${childSnapshot.key}')">Editar</button>
+                            <button class="button button-delete" onclick="deleteMachine('${childSnapshot.key}')">Excluir</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            });
+        }
+
+        function openAddMachine() {
+            document.getElementById('addMachineModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('addMachineModal').style.display = 'none';
+        }
+
+        function saveMachine() {
+            const name = document.getElementById('machineName').value;
+            const entryDate = document.getElementById('entryDate').value;
+            const exitDate = document.getElementById('exitDate').value || null;
+            const borrowed = document.getElementById('borrowed').value === 'true';
+            const stock = document.getElementById('stock').value;
+
+            if (name && entryDate && !isNaN(stock)) {
+                const newMachineRef = database.ref('machines').push();
+                newMachineRef.set({
+                    name: name,
+                    entryDate: entryDate,
+                    exitDate: exitDate,
+                    borrowed: borrowed,
+                    stock: parseInt(stock, 10)
+                }).then(() => {
+                    alert('Máquina adicionada com sucesso!');
+                    closeModal();
+                    loadMachines();
+                }).catch((error) => {
+                    alert('Erro ao adicionar máquina: ' + error.message);
+                });
+            } else {
+                alert('Por favor, preencha todos os campos.');
+            }
+        }
+
+        function openEditMachine(machineId) {
+            // Função para abrir a janela de edição da máquina
+            const machineRef = database.ref('machines/' + machineId);
+            machineRef.once('value').then((snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    document.getElementById('machineName').value = data.name;
+                    document.getElementById('entryDate').value = data.entryDate;
+                    document.getElementById('exitDate').value = data.exitDate || '';
+                    document.getElementById('borrowed').value = data.borrowed ? 'true' : 'false';
+                    document.getElementById('stock').value = data.stock;
+
+                    document.getElementById('modalTitle').textContent = 'Editar Máquina';
+                    document.querySelector('.add-button').textContent = 'Salvar Alterações';
+                    document.querySelector('.add-button').onclick = function() {
+                        updateMachine(machineId);
+                    };
+
+                    document.getElementById('addMachineModal').style.display = 'block';
+                } else {
+                    alert('Máquina não encontrada.');
+                }
+            });
+        }
+
+        function updateMachine(machineId) {
+            const name = document.getElementById('machineName').value;
+            const entryDate = document.getElementById('entryDate').value;
+            const exitDate = document.getElementById('exitDate').value || null;
+            const borrowed = document.getElementById('borrowed').value === 'true';
+            const stock = document.getElementById('stock').value;
+
+            if (name && entryDate && !isNaN(stock)) {
+                const machineRef = database.ref('machines/' + machineId);
+                machineRef.update({
+                    name: name,
+                    entryDate: entryDate,
+                    exitDate: exitDate,
+                    borrowed: borrowed,
+                    stock: parseInt(stock, 10)
+                }).then(() => {
+                    alert('Máquina atualizada com sucesso!');
+                    closeModal();
+                    loadMachines();
+                }).catch((error) => {
+                    alert('Erro ao atualizar máquina: ' + error.message);
+                });
+            } else {
+                alert('Por favor, preencha todos os campos.');
+            }
+        }
+
+        function deleteMachine(machineId) {
+            if (confirm("Tem certeza que deseja excluir esta máquina?")) {
+                const machineRef = database.ref('machines/' + machineId);
+                machineRef.remove().then(() => {
+                    alert('Máquina excluída com sucesso!');
+                    loadMachines();
+                }).catch((error) => {
+                    alert('Erro ao excluir máquina: ' + error.message);
+                });
+            }
+        }
+
+        function generateReport() {
+            window.open('report.html', '_blank');
+        }
+
+        // Carregar as máquinas ao abrir a página
+        window.onload = loadMachines;
+    </script>
+</body>
+</html>

@@ -3,17 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciamento de Tecidos</title>
+    <title>Tecidos</title>
     <link rel="stylesheet" href="styles.css">
     <style>
+        /* Estilos para o container principal */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Estilos para a tabela */
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 15px;
             text-align: center;
         }
         th {
@@ -26,57 +36,112 @@
         tr:hover {
             background-color: #ddd;
         }
-        .add-btn, .edit-btn, .delete-btn, .report-btn {
-            padding: 8px 12px;
+        .actions button {
+            margin: 0 5px;
+            padding: 10px 20px;
+            border: 1px solid #000; /* Borda preta fina */
+            background-color: #fff; /* Cor branca */
+            color: black; /* Texto preto para contraste */
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .actions .edit-btn {
+            background-color: #fff;
+        }
+        .actions .edit-btn:hover {
+            background-color: #f57c00;
+            color: white; /* Texto branco no hover */
+        }
+        .actions .delete-btn {
+            background-color: #fff;
+        }
+        .actions .delete-btn:hover {
+            background-color: #e53935;
+            color: white; /* Texto branco no hover */
+        }
+        .actions .report-btn {
+            background-color: #fff;
+        }
+        .actions .report-btn:hover {
+            background-color: #1976D2;
+            color: white; /* Texto branco no hover */
+        }
+        .filter-input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        /* Estilos para os botões */
+        .button-container {
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .add-button, .back-to-home {
+            padding: 12px 25px;
             border: none;
             color: white;
             cursor: pointer;
+            text-decoration: none;
             border-radius: 5px;
-            margin: 5px;
-            font-size: 14px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
         }
-        .add-btn {
+        .add-button {
             background-color: #4CAF50;
         }
-        .add-btn:hover {
+        .add-button:hover {
             background-color: #45a049;
         }
-        .edit-btn {
+        .back-to-home {
             background-color: #2196F3;
         }
-        .edit-btn:hover {
+        .back-to-home:hover {
             background-color: #1e88e5;
         }
-        .delete-btn {
-            background-color: #f44336;
-        }
-        .delete-btn:hover {
-            background-color: #e53935;
-        }
-        .report-btn {
-            background-color: #FF9800;
-        }
-        .report-btn:hover {
-            background-color: #fb8c00;
-        }
+
+        /* Estilos para o modal */
         .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
             left: 0;
             top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0,0,0);
-            background-color: rgba(0,0,0,0.4);
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.6); 
+            padding-top: 60px; 
         }
         .modal-content {
             background-color: #fefefe;
-            margin: 15% auto;
+            margin: 5% auto;
             padding: 20px;
             border: 1px solid #888;
             width: 80%;
+            max-width: 500px; 
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            animation: slideIn 0.3s ease-out;
+        }
+        .modal-header {
+            padding: 10px 0;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        .modal-footer {
+            padding: 10px 0;
+            text-align: center;
+            border-top: 1px solid #ddd;
+            margin-top: 20px;
         }
         .close {
             color: #aaa;
@@ -90,28 +155,43 @@
             text-decoration: none;
             cursor: pointer;
         }
-        .back-btn {
-            padding: 8px 16px;
-            border: none;
-            background-color: #2196F3;
-            color: white;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 14px;
-            margin-top: 10px;
+        .form-group {
+            margin-bottom: 15px;
         }
-        .back-btn:hover {
-            background-color: #1e88e5;
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        /* Animação para o modal */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Gerenciamento de Tecidos</h1>
-        <button class="add-btn" onclick="openModal()">Adicionar Tecido</button>
-        <div>
-            <input type="text" id="filterInput" placeholder="Filtrar tecidos...">
+        <h1>Tecidos</h1>
+        <div class="button-container">
+            <button class="add-button" onclick="openModal()">Adicionar Tecido</button>
+            <button class="back-to-home" onclick="window.location.href='Gerente.html'">Voltar</button>
         </div>
+        <input type="text" id="filterInput" class="filter-input" placeholder="Filtrar tecidos...">
         <table>
             <thead>
                 <tr>
@@ -120,7 +200,6 @@
                     <th>Tamanho</th>
                     <th>Quantidade</th>
                     <th>Data de Entrada</th>
-                    <th>Data de Saída</th>
                     <th>Ações</th>
                 </tr>
             </thead>
@@ -135,21 +214,29 @@
                 <span class="close" onclick="closeModal()">&times;</span>
                 <h2 id="modalTitle">Adicionar Tecido</h2>
                 <form id="addTecidoForm">
-                    <label for="nomeTecido">Nome:</label>
-                    <input type="text" id="nomeTecido" required>
-                    <label for="corTecido">Cor:</label>
-                    <input type="text" id="corTecido" required>
-                    <label for="tamanhoTecido">Tamanho:</label>
-                    <input type="number" id="tamanhoTecido" required>
-                    <label for="quantidadeTecido">Quantidade:</label>
-                    <input type="number" id="quantidadeTecido" required>
-                    <label for="dataEntrada">Data de Entrada:</label>
-                    <input type="date" id="dataEntrada" required>
-                    <label for="dataSaida">Data de Saída:</label>
-                    <input type="date" id="dataSaida">
-                    <button type="button" class="add-btn" onclick="salvarTecido()">Salvar</button>
+                    <div class="form-group">
+                        <label for="nomeTecido">Nome:</label>
+                        <input type="text" id="nomeTecido" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="corTecido">Cor:</label>
+                        <input type="text" id="corTecido" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tamanhoTecido">Tamanho:</label>
+                        <input type="number" id="tamanhoTecido" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantidadeTecido">Quantidade:</label>
+                        <input type="number" id="quantidadeTecido" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dataEntradaTecido">Data de Entrada:</label>
+                        <input type="date" id="dataEntradaTecido" required>
+                    </div>
+                    <button type="button" class="add-button" onclick="salvarTecido()">Salvar</button>
                 </form>
-                <button class="back-btn" onclick="closeModal()">Voltar</button>
+                <button class="back-to-home" onclick="closeModal()">Voltar</button>
             </div>
         </div>
 
@@ -170,18 +257,19 @@
                         <!-- Relatórios serão carregados aqui dinamicamente -->
                     </tbody>
                 </table>
-                <button class="back-btn" onclick="closeRelatorioModal()">Fechar</button>
+                <button class="back-to-home" onclick="closeRelatorioModal()">Fechar</button>
             </div>
         </div>
     </div>
 
     <script>
         const tecidos = [
-            { nome: 'Tecido X', cor: 'Azul', tamanho: 50, quantidade: 100, dataEntrada: '2024-08-01', dataSaida: '' },
-            { nome: 'Tecido Y', cor: 'Verde', tamanho: 60, quantidade: 0, dataEntrada: '2024-08-05', dataSaida: '' }
+            { nome: 'Tecido A', cor: 'Azul', tamanho: 200, quantidade: 50, dataEntrada: '2023-08-01' },
+            { nome: 'Tecido B', cor: 'Vermelho', tamanho: 150, quantidade: 30, dataEntrada: '2023-08-05' }
         ];
+
         let editIndex = -1;
-        let reports = [];
+        const reports = [];
 
         function loadTecidos() {
             const tecidoTableBody = document.getElementById('tecidoTableBody');
@@ -195,11 +283,10 @@
                     <td>${tecido.tamanho}</td>
                     <td>${tecido.quantidade}</td>
                     <td>${tecido.dataEntrada}</td>
-                    <td>${tecido.dataSaida}</td>
-                    <td>
+                    <td class="actions">
                         <button class="edit-btn" onclick="editTecido(${index})">Editar</button>
                         <button class="delete-btn" onclick="deleteTecido(${index})">Excluir</button>
-                        <button class="report-btn" onclick="enviarRelatorio(true)">Enviar Relatório</button>
+                        <button class="report-btn" onclick="enviarRelatorio(false)">Enviar Relatório</button>
                     </td>
                 `;
                 tecidoTableBody.appendChild(row);
@@ -222,13 +309,12 @@
             const cor = document.getElementById('corTecido').value;
             const tamanho = document.getElementById('tamanhoTecido').value;
             const quantidade = document.getElementById('quantidadeTecido').value;
-            const dataEntrada = document.getElementById('dataEntrada').value;
-            const dataSaida = document.getElementById('dataSaida').value;
+            const dataEntrada = document.getElementById('dataEntradaTecido').value;
 
             if (editIndex === -1) {
-                tecidos.push({ nome, cor, tamanho, quantidade, dataEntrada, dataSaida });
+                tecidos.push({ nome, cor, tamanho, quantidade, dataEntrada });
             } else {
-                tecidos[editIndex] = { nome, cor, tamanho, quantidade, dataEntrada, dataSaida };
+                tecidos[editIndex] = { nome, cor, tamanho, quantidade, dataEntrada };
             }
 
             loadTecidos();
@@ -242,8 +328,7 @@
             document.getElementById('corTecido').value = tecido.cor;
             document.getElementById('tamanhoTecido').value = tecido.tamanho;
             document.getElementById('quantidadeTecido').value = tecido.quantidade;
-            document.getElementById('dataEntrada').value = tecido.dataEntrada;
-            document.getElementById('dataSaida').value = tecido.dataSaida;
+            document.getElementById('dataEntradaTecido').value = tecido.dataEntrada;
             document.getElementById('addTecidoModal').style.display = 'block';
             document.getElementById('modalTitle').textContent = 'Editar Tecido';
         }
@@ -284,18 +369,32 @@
             });
         }
 
-        function enviarRelatorio(tecido) {
+        function enviarRelatorio(isLinha) {
             const reason = prompt('Digite o motivo do relatório:');
             if (reason) {
                 const report = {
                     date: new Date().toLocaleDateString(),
                     reason: reason,
-                    type: tecido ? 'Tecido' : 'Linha'
+                    type: isLinha ? 'Linha' : 'Tecido'
                 };
                 reports.push(report);
                 openRelatorioModal();
             }
         }
+
+        document.getElementById('filterInput').addEventListener('input', function() {
+            const filter = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#tecidoTableBody tr');
+            rows.forEach(row => {
+                const cells = row.getElementsByTagName('td');
+                const nome = cells[0].textContent.toLowerCase();
+                if (nome.indexOf(filter) > -1) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
 
         window.onload = loadTecidos;
     </script>
