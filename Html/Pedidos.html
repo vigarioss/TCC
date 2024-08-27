@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tecidos</title>
+    <title>Pedidos</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         /* Estilos para o container principal */
@@ -33,7 +33,7 @@
         margin: 0;
         }
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
             text-align: center;
@@ -218,217 +218,144 @@ tr:hover {
 </head>
 <body>
     <div class="container">
-        <h1>Tecidos</h1>
+        <h1>Pedidos</h1>
         <div class="button-container">
-            <button class="add-button" onclick="openModal()">Adicionar Tecido</button>
+            <button class="add-button" onclick="openModal()">Adicionar Pedido</button>
             <button class="back-to-home" onclick="window.location.href='Gerente.html'">Voltar</button>
         </div>
-        <input type="text" id="filterInput" class="filter-input" placeholder="Filtrar tecidos...">
+        <input type="text" id="filterInput" class="filter-input" placeholder="Filtrar pedidos...">
         <table>
             <thead>
                 <tr>
-                    <th>Nome</th>
-                    <th>Cor</th>
-                    <th>Tamanho</th>
+                    <th>Nome (Contratante)</th>
+                    <th>Peça</th>
                     <th>Quantidade</th>
-                    <th>Data de Entrada</th>
+                    <th>Preço</th>
+                    <th>Data Recebido</th>
+                    <th>Data Vencimento</th>
                     <th>Ações</th>
                 </tr>
             </thead>
-            <tbody id="tecidoTableBody">
-                <!-- Tecidos serão carregados aqui dinamicamente -->
+            <tbody id="pedidoTableBody">
+                <!-- Pedidos serão carregados aqui dinamicamente -->
             </tbody>
         </table>
 
-        <!-- Modal para Adicionar/Editar Tecidos -->
-        <div id="addTecidoModal" class="modal">
+        <!-- Modal para Adicionar/Editar Pedidos -->
+        <div id="addPedidoModal" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeModal()">&times;</span>
-                <h2 id="modalTitle">Adicionar Tecido</h2>
-                <form id="addTecidoForm">
+                <h2 id="modalTitle">Adicionar Pedido</h2>
+                <form id="addPedidoForm">
                     <div class="form-group">
-                        <label for="nomeTecido">Nome:</label>
-                        <input type="text" id="nomeTecido" required>
+                        <label for="nomeContratante">Nome (Contratante):</label>
+                        <input type="text" id="nomeContratante" required>
                     </div>
                     <div class="form-group">
-                        <label for="corTecido">Cor:</label>
-                        <input type="text" id="corTecido" required>
+                        <label for="peca">Peça:</label>
+                        <input type="text" id="peca" required>
                     </div>
                     <div class="form-group">
-                        <label for="tamanhoTecido">Tamanho:</label>
-                        <input type="number" id="tamanhoTecido" required>
+                        <label for="quantidade">Quantidade:</label>
+                        <input type="number" id="quantidade" required>
                     </div>
                     <div class="form-group">
-                        <label for="quantidadeTecido">Quantidade:</label>
-                        <input type="number" id="quantidadeTecido" required>
+                        <label for="preco">Preço:</label>
+                        <input type="number" id="preco" required>
                     </div>
                     <div class="form-group">
-                        <label for="dataEntradaTecido">Data de Entrada:</label>
-                        <input type="date" id="dataEntradaTecido" required>
+                        <label for="dataRecebido">Data Recebido:</label>
+                        <input type="date" id="dataRecebido" required>
                     </div>
-                    <button type="button" class="add-button" onclick="salvarTecido()">Salvar</button>
+                    <div class="form-group">
+                        <label for="dataVencimento">Data Vencimento:</label>
+                        <input type="date" id="dataVencimento" required>
+                    </div>
+                    <button type="button" class="add-button" onclick="salvarPedido()">Salvar</button>
                 </form>
                 <button class="back-to-home" onclick="closeModal()">Voltar</button>
-            </div>
-        </div>
-
-        <!-- Modal para Relatórios -->
-        <div id="relatorioModal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeRelatorioModal()">&times;</span>
-                <h2>Relatórios Enviados</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Data</th>
-                            <th>Motivo</th>
-                            <th>Tipo</th>
-                        </tr>
-                    </thead>
-                    <tbody id="reportTableBody">
-                        <!-- Relatórios serão carregados aqui dinamicamente -->
-                    </tbody>
-                </table>
-                <button class="back-to-home" onclick="closeRelatorioModal()">Fechar</button>
             </div>
         </div>
     </div>
 
     <script>
-        const tecidos = [
-            { nome: 'Tecido A', cor: 'Azul', tamanho: 200, quantidade: 50, dataEntrada: '2023-08-01' },
-            { nome: 'Tecido B', cor: 'Vermelho', tamanho: 150, quantidade: 30, dataEntrada: '2023-08-05' }
+        const pedidos = [
+            { nomeContratante: 'João Silva', peca: 'Camiseta Manga Longa', quantidade: 100, preco: 2000, dataRecebido: '2024-08-01', dataVencimento: '2024-09-01' },
+            { nomeContratante: 'Maria Oliveira', peca: 'Calça Jeans', quantidade: 50, preco: 2000, dataRecebido: '2024-08-05', dataVencimento: '2024-09-05' }
         ];
 
         let editIndex = -1;
-        const reports = [];
 
-        function loadTecidos() {
-            const tecidoTableBody = document.getElementById('tecidoTableBody');
-            tecidoTableBody.innerHTML = '';
+        function loadPedidos() {
+            const pedidoTableBody = document.getElementById('pedidoTableBody');
+            pedidoTableBody.innerHTML = '';
 
-            tecidos.forEach((tecido, index) => {
+            pedidos.forEach((pedido, index) => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${tecido.nome}</td>
-                    <td>${tecido.cor}</td>
-                    <td>${tecido.tamanho}</td>
-                    <td>${tecido.quantidade}</td>
-                    <td>${tecido.dataEntrada}</td>
+                    <td>${pedido.nomeContratante}</td>
+                    <td>${pedido.peca}</td>
+                    <td>${pedido.quantidade}</td>
+                    <td>${pedido.preco}</td>
+                    <td>${pedido.dataRecebido}</td>
+                    <td>${pedido.dataVencimento}</td>
                     <td class="actions">
-                        <button class="edit-btn" onclick="editTecido(${index})">Editar</button>
-                        <button class="delete-btn" onclick="deleteTecido(${index})">Excluir</button>
-                        <button class="report-btn" onclick="enviarRelatorio(false)">Enviar Relatório</button>
+                        <button class="edit-btn" onclick="editPedido(${index})">Editar</button>
+                        <button class="delete-btn" onclick="deletePedido(${index})">Excluir</button>
                     </td>
                 `;
-                tecidoTableBody.appendChild(row);
+                pedidoTableBody.appendChild(row);
             });
         }
 
         function openModal() {
-            document.getElementById('addTecidoModal').style.display = 'block';
-            document.getElementById('modalTitle').textContent = 'Adicionar Tecido';
-            document.getElementById('addTecidoForm').reset();
+            document.getElementById('addPedidoModal').style.display = 'block';
+            document.getElementById('modalTitle').textContent = 'Adicionar Pedido';
+            document.getElementById('addPedidoForm').reset();
             editIndex = -1;
         }
 
         function closeModal() {
-            document.getElementById('addTecidoModal').style.display = 'none';
+            document.getElementById('addPedidoModal').style.display = 'none';
         }
 
-        function salvarTecido() {
-            const nome = document.getElementById('nomeTecido').value;
-            const cor = document.getElementById('corTecido').value;
-            const tamanho = document.getElementById('tamanhoTecido').value;
-            const quantidade = document.getElementById('quantidadeTecido').value;
-            const dataEntrada = document.getElementById('dataEntradaTecido').value;
+        function salvarPedido() {
+            const nomeContratante = document.getElementById('nomeContratante').value;
+            const peca = document.getElementById('peca').value;
+            const quantidade = document.getElementById('quantidade').value;
+            const preco = document.getElementById('preco').value;
+            const dataRecebido = document.getElementById('dataRecebido').value;
+            const dataVencimento = document.getElementById('dataVencimento').value;
 
             if (editIndex === -1) {
-                tecidos.push({ nome, cor, tamanho, quantidade, dataEntrada });
+                pedidos.push({ nomeContratante, peca, quantidade, preco, dataRecebido, dataVencimento });
             } else {
-                tecidos[editIndex] = { nome, cor, tamanho, quantidade, dataEntrada };
+                pedidos[editIndex] = { nomeContratante, peca, quantidade, preco, dataRecebido, dataVencimento };
             }
 
-            loadTecidos();
+            loadPedidos();
             closeModal();
         }
 
-        function editTecido(index) {
+        function editPedido(index) {
             editIndex = index;
-            const tecido = tecidos[index];
-            document.getElementById('nomeTecido').value = tecido.nome;
-            document.getElementById('corTecido').value = tecido.cor;
-            document.getElementById('tamanhoTecido').value = tecido.tamanho;
-            document.getElementById('quantidadeTecido').value = tecido.quantidade;
-            document.getElementById('dataEntradaTecido').value = tecido.dataEntrada;
-            document.getElementById('addTecidoModal').style.display = 'block';
-            document.getElementById('modalTitle').textContent = 'Editar Tecido';
+            const pedido = pedidos[index];
+            document.getElementById('nomeContratante').value = pedido.nomeContratante;
+            document.getElementById('peca').value = pedido.peca;
+            document.getElementById('quantidade').value = pedido.quantidade;
+            document.getElementById('preco').value = pedido.preco;
+            document.getElementById('dataRecebido').value = pedido.dataRecebido;
+            document.getElementById('dataVencimento').value = pedido.dataVencimento;
+            document.getElementById('addPedidoModal').style.display = 'block';
+            document.getElementById('modalTitle').textContent = 'Editar Pedido';
         }
 
-        function deleteTecido(index) {
-            tecidos.splice(index, 1);
-            loadTecidos();
+        function deletePedido(index) {
+            pedidos.splice(index, 1);
+            loadPedidos();
         }
 
-        function openRelatorioModal() {
-            document.getElementById('relatorioModal').style.display = 'block';
-            loadReports();
-        }
-
-        function closeRelatorioModal() {
-            document.getElementById('relatorioModal').style.display = 'none';
-        }
-
-        function loadReports() {
-            const reportTableBody = document.getElementById('reportTableBody');
-            reportTableBody.innerHTML = '';
-
-            reports.forEach(report => {
-                const row = document.createElement('tr');
-                const dateCell = document.createElement('td');
-                dateCell.textContent = report.date;
-                row.appendChild(dateCell);
-
-                const reasonCell = document.createElement('td');
-                reasonCell.textContent = report.reason;
-                row.appendChild(reasonCell);
-
-                const typeCell = document.createElement('td');
-                typeCell.textContent = report.type;
-                row.appendChild(typeCell);
-
-                reportTableBody.appendChild(row);
-            });
-        }
-
-        function enviarRelatorio(isLinha) {
-            const reason = prompt('Digite o motivo do relatório:');
-            if (reason) {
-                const report = {
-                    date: new Date().toLocaleDateString(),
-                    reason: reason,
-                    type: isLinha ? 'Linha' : 'Tecido'
-                };
-                reports.push(report);
-                openRelatorioModal();
-            }
-        }
-
-        document.getElementById('filterInput').addEventListener('input', function() {
-            const filter = this.value.toLowerCase();
-            const rows = document.querySelectorAll('#tecidoTableBody tr');
-            rows.forEach(row => {
-                const cells = row.getElementsByTagName('td');
-                const nome = cells[0].textContent.toLowerCase();
-                if (nome.indexOf(filter) > -1) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        });
-
-        window.onload = loadTecidos;
+        window.onload = loadPedidos;
     </script>
 </body>
 </html>

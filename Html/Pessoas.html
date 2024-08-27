@@ -5,12 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listagem de Pessoas</title>
     <style>
+        h1{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 20px; /* Aumente o padding para botões maiores */
+            border: 1px solid #000; /* Borda preta fina */
+            background-color: #fff; /* Cor branca */
+            color: black; /* Texto preto para contraste */
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 18px; /* Aumente o tamanho da fonte para botões maiores */
+            transition: background-color 0.3s ease, color 0.3s ease;
+            min-width: 200px; /* Defina um tamanho mínimo para garantir a uniformidade */
+            min-height: 60px; /* Defina um tamanho mínimo para garantir a uniformidade */
+        }
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
             text-align: center;
+            background: url('../Css/malhas.jfif') no-repeat center center fixed;
+            background-size: cover;
         }
         .container {
             max-width: 1200px;
@@ -47,18 +64,33 @@
             background-color: #45a049;
         }
         table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            padding: 12px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    background-color: #fff; /* Fundo branco para a tabela */
+    border: 1px solid #ddd; /* Borda da tabela */
+}
+
+th, td {
+    border: 1px solid #ddd; /* Borda fina para as células */
+    padding: 15px;
+    text-align: center;
+    background-color: #fff; /* Fundo branco para as células */
+}
+
+th {
+    background-color: #4CAF50; /* Cor de fundo para os cabeçalhos */
+    color: white; /* Cor do texto dos cabeçalhos */
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2; /* Cor alternada para linhas pares */
+}
+
+tr:hover {
+    background-color: #ddd; /* Cor ao passar o mouse */
+}
         .button-back {
             margin-top: 20px;
             padding: 10px 20px;

@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tecidos</title>
+    <title>Produção de Peças</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Estilos para o container principal */
         h1{
             display: flex;
             align-items: center;
@@ -32,8 +31,9 @@
         background-size: cover;
         margin: 0;
         }
+        /* Estilos para o container principal */
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
             text-align: center;
@@ -218,55 +218,64 @@ tr:hover {
 </head>
 <body>
     <div class="container">
-        <h1>Tecidos</h1>
+        <h1>Produção de Peças</h1>
         <div class="button-container">
-            <button class="add-button" onclick="openModal()">Adicionar Tecido</button>
+            <button class="add-button" onclick="openModal()">Adicionar Peça</button>
             <button class="back-to-home" onclick="window.location.href='Gerente.html'">Voltar</button>
         </div>
-        <input type="text" id="filterInput" class="filter-input" placeholder="Filtrar tecidos...">
+        <h2>Peças Produzidas</h2>
+        <input type="text" id="filterInput" class="filter-input" placeholder="Filtrar peças...">
         <table>
             <thead>
                 <tr>
-                    <th>Nome</th>
-                    <th>Cor</th>
-                    <th>Tamanho</th>
-                    <th>Quantidade</th>
-                    <th>Data de Entrada</th>
+                    <th>Nome da Peça</th>
+                    <th>Tempo Médio de Produção</th>
+                    <th>Valor da Peça</th>
+                    <th>Linha</th>
+                    <th>Tecido</th>
                     <th>Ações</th>
                 </tr>
             </thead>
-            <tbody id="tecidoTableBody">
-                <!-- Tecidos serão carregados aqui dinamicamente -->
+            <tbody id="pecaTableBody">
+                <!-- Peças serão carregadas aqui dinamicamente -->
             </tbody>
         </table>
 
-        <!-- Modal para Adicionar/Editar Tecidos -->
-        <div id="addTecidoModal" class="modal">
+        <!-- Modal para Adicionar/Editar Peças -->
+        <div id="addPecaModal" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeModal()">&times;</span>
-                <h2 id="modalTitle">Adicionar Tecido</h2>
-                <form id="addTecidoForm">
+                <h2 id="modalTitle">Adicionar Peça</h2>
+                <form id="addPecaForm">
                     <div class="form-group">
-                        <label for="nomeTecido">Nome:</label>
-                        <input type="text" id="nomeTecido" required>
+                        <label for="nomePeca">Nome da Peça:</label>
+                        <input type="text" id="nomePeca" required>
                     </div>
                     <div class="form-group">
-                        <label for="corTecido">Cor:</label>
-                        <input type="text" id="corTecido" required>
+                        <label for="tempoPeca">Tempo Médio de Produção:</label>
+                        <input type="text" id="tempoPeca" required>
                     </div>
                     <div class="form-group">
-                        <label for="tamanhoTecido">Tamanho:</label>
-                        <input type="number" id="tamanhoTecido" required>
+                        <label for="valorPeca">Valor da Peça:</label>
+                        <input type="number" id="valorPeca" required>
                     </div>
                     <div class="form-group">
-                        <label for="quantidadeTecido">Quantidade:</label>
-                        <input type="number" id="quantidadeTecido" required>
+                        <label for="linhaPeca">Linha:</label>
+                        <select id="linhaPeca" required>
+                            <!-- Opcionalmente carregar as linhas do banco de dados -->
+                            <option value="Linha A">Linha A</option>
+                            <option value="Linha B">Linha B</option>
+                        </select>
                     </div>
                     <div class="form-group">
-                        <label for="dataEntradaTecido">Data de Entrada:</label>
-                        <input type="date" id="dataEntradaTecido" required>
+                        <label for="tecidoPeca">Tecido:</label>
+                        <select id="tecidoPeca" required>
+                            <!-- Opcionalmente carregar os tecidos do banco de dados -->
+                            <option value="Tecido A">Tecido A</option>
+                            <option value="Tecido B">Tecido B</option>
+                        </select>
                     </div>
-                    <button type="button" class="add-button" onclick="salvarTecido()">Salvar</button>
+                    <button type="button" class="add-button" onclick="salvarPeca()">Salvar</button>
                 </form>
                 <button class="back-to-home" onclick="closeModal()">Voltar</button>
             </div>
@@ -295,79 +304,79 @@ tr:hover {
     </div>
 
     <script>
-        const tecidos = [
-            { nome: 'Tecido A', cor: 'Azul', tamanho: 200, quantidade: 50, dataEntrada: '2023-08-01' },
-            { nome: 'Tecido B', cor: 'Vermelho', tamanho: 150, quantidade: 30, dataEntrada: '2023-08-05' }
+        const pecas = [
+            { nome: 'Camiseta Manga Longa', tempo: '1 minuto por peça', valor: 20, linha: 'Linha A', tecido: 'Tecido A' },
+            { nome: 'Calça Jeans', tempo: '2 minutos por peça', valor: 40, linha: 'Linha B', tecido: 'Tecido B' }
         ];
 
         let editIndex = -1;
         const reports = [];
 
-        function loadTecidos() {
-            const tecidoTableBody = document.getElementById('tecidoTableBody');
-            tecidoTableBody.innerHTML = '';
+        function loadPecas() {
+            const pecaTableBody = document.getElementById('pecaTableBody');
+            pecaTableBody.innerHTML = '';
 
-            tecidos.forEach((tecido, index) => {
+            pecas.forEach((peca, index) => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${tecido.nome}</td>
-                    <td>${tecido.cor}</td>
-                    <td>${tecido.tamanho}</td>
-                    <td>${tecido.quantidade}</td>
-                    <td>${tecido.dataEntrada}</td>
+                    <td>${peca.nome}</td>
+                    <td>${peca.tempo}</td>
+                    <td>${peca.valor}</td>
+                    <td>${peca.linha}</td>
+                    <td>${peca.tecido}</td>
                     <td class="actions">
-                        <button class="edit-btn" onclick="editTecido(${index})">Editar</button>
-                        <button class="delete-btn" onclick="deleteTecido(${index})">Excluir</button>
+                        <button class="edit-btn" onclick="editPeca(${index})">Editar</button>
+                        <button class="delete-btn" onclick="deletePeca(${index})">Excluir</button>
                         <button class="report-btn" onclick="enviarRelatorio(false)">Enviar Relatório</button>
                     </td>
                 `;
-                tecidoTableBody.appendChild(row);
+                pecaTableBody.appendChild(row);
             });
         }
 
         function openModal() {
-            document.getElementById('addTecidoModal').style.display = 'block';
-            document.getElementById('modalTitle').textContent = 'Adicionar Tecido';
-            document.getElementById('addTecidoForm').reset();
+            document.getElementById('addPecaModal').style.display = 'block';
+            document.getElementById('modalTitle').textContent = 'Adicionar Peça';
+            document.getElementById('addPecaForm').reset();
             editIndex = -1;
         }
 
         function closeModal() {
-            document.getElementById('addTecidoModal').style.display = 'none';
+            document.getElementById('addPecaModal').style.display = 'none';
         }
 
-        function salvarTecido() {
-            const nome = document.getElementById('nomeTecido').value;
-            const cor = document.getElementById('corTecido').value;
-            const tamanho = document.getElementById('tamanhoTecido').value;
-            const quantidade = document.getElementById('quantidadeTecido').value;
-            const dataEntrada = document.getElementById('dataEntradaTecido').value;
+        function salvarPeca() {
+            const nome = document.getElementById('nomePeca').value;
+            const tempo = document.getElementById('tempoPeca').value;
+            const valor = document.getElementById('valorPeca').value;
+            const linha = document.getElementById('linhaPeca').value;
+            const tecido = document.getElementById('tecidoPeca').value;
 
             if (editIndex === -1) {
-                tecidos.push({ nome, cor, tamanho, quantidade, dataEntrada });
+                pecas.push({ nome, tempo, valor, linha, tecido });
             } else {
-                tecidos[editIndex] = { nome, cor, tamanho, quantidade, dataEntrada };
+                pecas[editIndex] = { nome, tempo, valor, linha, tecido };
             }
 
-            loadTecidos();
+            loadPecas();
             closeModal();
         }
 
-        function editTecido(index) {
+        function editPeca(index) {
             editIndex = index;
-            const tecido = tecidos[index];
-            document.getElementById('nomeTecido').value = tecido.nome;
-            document.getElementById('corTecido').value = tecido.cor;
-            document.getElementById('tamanhoTecido').value = tecido.tamanho;
-            document.getElementById('quantidadeTecido').value = tecido.quantidade;
-            document.getElementById('dataEntradaTecido').value = tecido.dataEntrada;
-            document.getElementById('addTecidoModal').style.display = 'block';
-            document.getElementById('modalTitle').textContent = 'Editar Tecido';
+            const peca = pecas[index];
+            document.getElementById('nomePeca').value = peca.nome;
+            document.getElementById('tempoPeca').value = peca.tempo;
+            document.getElementById('valorPeca').value = peca.valor;
+            document.getElementById('linhaPeca').value = peca.linha;
+            document.getElementById('tecidoPeca').value = peca.tecido;
+            document.getElementById('addPecaModal').style.display = 'block';
+            document.getElementById('modalTitle').textContent = 'Editar Peça';
         }
 
-        function deleteTecido(index) {
-            tecidos.splice(index, 1);
-            loadTecidos();
+        function deletePeca(index) {
+            pecas.splice(index, 1);
+            loadPecas();
         }
 
         function openRelatorioModal() {
@@ -407,28 +416,14 @@ tr:hover {
                 const report = {
                     date: new Date().toLocaleDateString(),
                     reason: reason,
-                    type: isLinha ? 'Linha' : 'Tecido'
+                    type: isLinha ? 'Linha' : 'Peça'
                 };
                 reports.push(report);
                 openRelatorioModal();
             }
         }
 
-        document.getElementById('filterInput').addEventListener('input', function() {
-            const filter = this.value.toLowerCase();
-            const rows = document.querySelectorAll('#tecidoTableBody tr');
-            rows.forEach(row => {
-                const cells = row.getElementsByTagName('td');
-                const nome = cells[0].textContent.toLowerCase();
-                if (nome.indexOf(filter) > -1) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        });
-
-        window.onload = loadTecidos;
+        window.onload = loadPecas;
     </script>
 </body>
 </html>
