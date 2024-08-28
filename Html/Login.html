@@ -1,11 +1,31 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tela de Login</title>
     <link rel="stylesheet" href="../Css/Login.css">
+    <!-- Adicione os scripts do Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-auth.js"></script>
+    <script>
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAeCoLJn1HbNTmkgH5E4QEszbzIqlBuvVE",
+            authDomain: "tcc-if-fc12c.firebaseapp.com",
+            projectId: "tcc-if-fc12c",
+            storageBucket: "tcc-if-fc12c.appspot.com",
+            messagingSenderId: "699868556462",
+            appId: "1:699868556462:web:2816fa93175d8c5611113f",
+            measurementId: "G-06ZFNG0GBZ"
+        };x
+
+        // Inicialize o Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
 </head>
+
 <body>
     <div class="login-container">
         <h1 id="loginTitle">Login</h1>
@@ -14,9 +34,9 @@
             <button class="role-btn" data-role="manager">Gerente</button>
         </div>
         <div id="loginForm" class="form-container" style="display: none;">
-            <form action="#" method="post">
+            <form id="loginFormElement">
                 <label for="username">Nome de usuário</label>
-                <input type="text" id="username" name="username" required>
+                <input type="email" id="username" name="username" required>
 
                 <label for="password">Senha</label>
                 <input type="password" id="password" name="password" required>
@@ -29,4 +49,5 @@
     </div>
     <script src="../Scripts/Login.js"></script>
 </body>
+
 </html>
