@@ -1,57 +1,49 @@
-// Inicialize o Firebase Auth
-const auth = firebase.auth();
+import { initializeApp } from 'firebase/app';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 
-document.addEventListener('DOMContentLoaded', function () {
-    const roleSelection = document.getElementById('roleSelection');
-    const loginForm = document.getElementById('loginForm');
-    const loginFormElement = document.getElementById('loginFormElement');
-    const welcomeMessage = document.getElementById('welcomeMessage');
-    const deleteAccountBtn = document.getElementById('deleteAccount');
-    
-    // Mostrar o formulário de login quando um botão de função for clicado
-    roleSelection.addEventListener('click', function (event) {
-        if (event.target.classList.contains('role-btn')) {
-            loginForm.style.display = 'block';
-        }
+const firebaseConfig = {
+    apiKey: "AIzaSyAeCoLJn1HbNTmkgH5E4QEszbzIqlBuvVE",
+    authDomain: "tcc-if-fc12c.firebaseapp.com",
+    projectId: "tcc-if-fc12c",
+    storageBucket: "tcc-if-fc12c.appspot.com",
+    messagingSenderId: "699868556462",
+    appId: "1:699868556462:web:2816fa93175d8c5611113f",
+    measurementId: "G-06ZFNG0GBZ"
+  };
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const signUp = (email, password) => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log('Usuário criado com sucesso:', user);
+      })
+      .catch((error) => {
+        console.error('Erro ao criar usuário:', error);
+      });
+  };
+  const login = (email, password) => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log('Login realizado com sucesso:', user);
+      })
+      .catch((error) => {
+        console.error('Erro no login:', error);
+      });
+  };
+  import { sendEmailVerification } from 'firebase/auth';
+
+  const sendVerificationEmail = () => {
+    sendEmailVerification(auth.currentUser)
+      .then(() => {
+        console.log('Email de verificação enviado.');
+      });
+  };
+  const logout = () => {
+    auth.signOut().then(() => {
+      console.log('Logout realizado com sucesso.');
     });
-
-    // Manipular o envio do formulário de login
-    loginFormElement.addEventListener('submit', function (event) {
-        event.preventDefault();
-        const email = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-
-        // Autenticar o usuário
-        auth.signInWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                // Usuário logado com sucesso
-                const user = userCredential.user;
-                welcomeMessage.textContent = `Bem-vindo, ${user.email}`;
-                welcomeMessage.style.display = 'block';
-                deleteAccountBtn.style.display = 'block';
-                loginForm.style.display = 'none';
-            })
-            .catch((error) => {
-                // Mostrar erro
-                const errorMessage = error.message;
-                alert(errorMessage);
-            });
-    });
-
-    // Excluir conta
-    deleteAccountBtn.addEventListener('click', function () {
-        const user = auth.currentUser;
-        if (user) {
-            user.delete().then(() => {
-                // Conta excluída com sucesso
-                alert('Conta excluída com sucesso.');
-                welcomeMessage.style.display = 'none';
-                deleteAccountBtn.style.display = 'none';
-                loginForm.style.display = 'block';
-            }).catch((error) => {
-                // Mostrar erro
-                alert('Erro ao excluir conta: ' + error.message);
-            });
-        }
-    });
-});
+  };
+        

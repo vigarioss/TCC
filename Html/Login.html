@@ -1,53 +1,122 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tela de Login</title>
-    <link rel="stylesheet" href="../Css/Login.css">
-    <!-- Adicione os scripts do Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-auth.js"></script>
-    <script>
-        // Configuração do Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyAeCoLJn1HbNTmkgH5E4QEszbzIqlBuvVE",
-            authDomain: "tcc-if-fc12c.firebaseapp.com",
-            projectId: "tcc-if-fc12c",
-            storageBucket: "tcc-if-fc12c.appspot.com",
-            messagingSenderId: "699868556462",
-            appId: "1:699868556462:web:2816fa93175d8c5611113f",
-            measurementId: "G-06ZFNG0GBZ"
-        };x
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autenticação Firebase</title>
+  <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
 
-        // Inicialize o Firebase
-        firebase.initializeApp(firebaseConfig);
-    </script>
+    .container {
+      text-align: center;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    input {
+      padding: 10px;
+      margin: 10px;
+      width: 80%;
+      max-width: 300px;
+    }
+
+    button {
+      padding: 10px;
+      margin: 10px;
+      width: 80%;
+      max-width: 300px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
-
 <body>
-    <div class="login-container">
-        <h1 id="loginTitle">Login</h1>
-        <div id="roleSelection" class="role-selection">
-            <button class="role-btn" data-role="employee">Funcionário</button>
-            <button class="role-btn" data-role="manager">Gerente</button>
-        </div>
-        <div id="loginForm" class="form-container" style="display: none;">
-            <form id="loginFormElement">
-                <label for="username">Nome de usuário</label>
-                <input type="email" id="username" name="username" required>
 
-                <label for="password">Senha</label>
-                <input type="password" id="password" name="password" required>
+  <div class="container">
+    <h2>Autenticação com Firebase</h2>
 
-                <button type="submit">Entrar</button>
-            </form>
-        </div>
-        <div id="welcomeMessage" style="display: none;"></div>
-        <button id="deleteAccount" style="display: none;">Excluir Conta</button>
-    </div>
-    <script src="../Scripts/Login.js"></script>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Senha" required>
+    <button onclick="signUp()">Cadastrar</button>
+    <button onclick="login()">Login</button>
+    <button onclick="logout()">Logout</button>
+    <p id="message"></p>
+  </div>
+
+  <script>
+    // Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "SUA_API_KEY",
+      authDomain: "SEU_DOMINIO.firebaseapp.com",
+      projectId: "SEU_PROJECT_ID",
+      storageBucket: "SEU_BUCKET.appspot.com",
+      messagingSenderId: "SEU_MESSAGING_ID",
+      appId: "SUA_APP_ID"
+    };
+
+    // Inicializando o Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.getAuth(app);
+
+    // Função para criar usuário
+    function signUp() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      firebase.createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          document.getElementById('message').innerText = 'Usuário cadastrado com sucesso!';
+          console.log('Usuário:', userCredential.user);
+        })
+        .catch((error) => {
+          document.getElementById('message').innerText = 'Erro ao cadastrar usuário: ' + error.message;
+        });
+    }
+
+    // Função para login
+    function login() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      firebase.signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          document.getElementById('message').innerText = 'Login realizado com sucesso!';
+          console.log('Usuário logado:', userCredential.user);
+        })
+        .catch((error) => {
+          document.getElementById('message').innerText = 'Erro no login: ' + error.message;
+        });
+    }
+
+    // Função para logout
+    function logout() {
+      firebase.signOut(auth)
+        .then(() => {
+          document.getElementById('message').innerText = 'Logout realizado com sucesso!';
+        })
+        .catch((error) => {
+          document.getElementById('message').innerText = 'Erro ao fazer logout: ' + error.message;
+        });
+    }
+  </script>
+
 </body>
-
 </html>
