@@ -1,18 +1,15 @@
-// Buttons
 var authEmailPassButton = document.getElementById('authEmailPassButton');
-
-
 var createUserButton = document.getElementById('createUserButton');
 var logOutButton = document.getElementById('logOutButton');
 
-// Inputs
+
 var emailInput = document.getElementById('emailInput');
 var passwordInput = document.getElementById('passwordInput');
 
-// Displays
+
 var displayName = document.getElementById('displayName');
 
-// Criar novo usuário
+
 createUserButton.addEventListener('click', function () {
     firebase
         .auth()
