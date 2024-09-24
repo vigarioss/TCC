@@ -1,6 +1,6 @@
 // Buttons
 var authEmailPassButton = document.getElementById('authEmailPassButton');
-var authGoogleButton = document.getElementById('authGoogleButton');
+
 
 var createUserButton = document.getElementById('createUserButton');
 var logOutButton = document.getElementById('logOutButton');

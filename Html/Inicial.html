@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso ao Sistema</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        .options {
+            margin: 20px 0;
+        }
+        .option {
+            margin: 10px 0;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Acesso ao Sistema</h1>
+    <p>Selecione seu tipo de acesso:</p>
+    
+    <div class="options">
+        <div class="option">
+            <input type="radio" id="gerente" name="role" value="gerente">
+            <label for="gerente">Login como Gerente</label>
+        </div>
+        <div class="option">
+            <input type="radio" id="funcionario" name="role" value="funcionario">
+            <label for="funcionario">Login como Funcionário</label>
+        </div>
+    </div>
+    
+    <button onclick="proceed()">Continuar</button>
+</div>
+
+<script>
+    function proceed() {
+        const selectedRole = document.querySelector('input[name="role"]:checked');
+        if (!selectedRole) {
+            alert("Por favor, selecione um tipo de acesso.");
+            return;
+        }
+        
+        // Redirecionar baseado na seleção
+        if (selectedRole.value === 'gerente') {
+            window.location.href = 'authentication.html'; // Substitua pelo URL da página de login do gerente
+        } else {
+            window.location.href = 'authentication.html'; // Substitua pelo URL da página de login do funcionário
+        }
+    }
+</script>
+
+</body>
+</html>
