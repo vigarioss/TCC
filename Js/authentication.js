@@ -1,10 +1,7 @@
 // Buttons
 var authEmailPassButton = document.getElementById('authEmailPassButton');
-var authFacebookButton = document.getElementById('authFacebookButton');
-var authTwitterButton = document.getElementById('authTwitterButton');
-var authGoogleButton = document.getElementById('authGoogleButton');
-var authGitHubButton = document.getElementById('authGitHubButton');
-var authAnonymouslyButton = document.getElementById('authAnonymouslyButton');
+
+
 var createUserButton = document.getElementById('createUserButton');
 var logOutButton = document.getElementById('logOutButton');
 
