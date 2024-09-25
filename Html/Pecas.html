@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Produção de Peças</title>
-    <link rel="stylesheet" href="styles.css">
+    
     <style>
         h1{
             display: flex;
@@ -302,128 +302,8 @@ tr:hover {
             </div>
         </div>
     </div>
-
-    <script>
-        const pecas = [
-            { nome: 'Camiseta Manga Longa', tempo: '1 minuto por peça', valor: 20, linha: 'Linha A', tecido: 'Tecido A' },
-            { nome: 'Calça Jeans', tempo: '2 minutos por peça', valor: 40, linha: 'Linha B', tecido: 'Tecido B' }
-        ];
-
-        let editIndex = -1;
-        const reports = [];
-
-        function loadPecas() {
-            const pecaTableBody = document.getElementById('pecaTableBody');
-            pecaTableBody.innerHTML = '';
-
-            pecas.forEach((peca, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${peca.nome}</td>
-                    <td>${peca.tempo}</td>
-                    <td>${peca.valor}</td>
-                    <td>${peca.linha}</td>
-                    <td>${peca.tecido}</td>
-                    <td class="actions">
-                        <button class="edit-btn" onclick="editPeca(${index})">Editar</button>
-                        <button class="delete-btn" onclick="deletePeca(${index})">Excluir</button>
-                        <button class="report-btn" onclick="enviarRelatorio(false)">Enviar Relatório</button>
-                    </td>
-                `;
-                pecaTableBody.appendChild(row);
-            });
-        }
-
-        function openModal() {
-            document.getElementById('addPecaModal').style.display = 'block';
-            document.getElementById('modalTitle').textContent = 'Adicionar Peça';
-            document.getElementById('addPecaForm').reset();
-            editIndex = -1;
-        }
-
-        function closeModal() {
-            document.getElementById('addPecaModal').style.display = 'none';
-        }
-
-        function salvarPeca() {
-            const nome = document.getElementById('nomePeca').value;
-            const tempo = document.getElementById('tempoPeca').value;
-            const valor = document.getElementById('valorPeca').value;
-            const linha = document.getElementById('linhaPeca').value;
-            const tecido = document.getElementById('tecidoPeca').value;
-
-            if (editIndex === -1) {
-                pecas.push({ nome, tempo, valor, linha, tecido });
-            } else {
-                pecas[editIndex] = { nome, tempo, valor, linha, tecido };
-            }
-
-            loadPecas();
-            closeModal();
-        }
-
-        function editPeca(index) {
-            editIndex = index;
-            const peca = pecas[index];
-            document.getElementById('nomePeca').value = peca.nome;
-            document.getElementById('tempoPeca').value = peca.tempo;
-            document.getElementById('valorPeca').value = peca.valor;
-            document.getElementById('linhaPeca').value = peca.linha;
-            document.getElementById('tecidoPeca').value = peca.tecido;
-            document.getElementById('addPecaModal').style.display = 'block';
-            document.getElementById('modalTitle').textContent = 'Editar Peça';
-        }
-
-        function deletePeca(index) {
-            pecas.splice(index, 1);
-            loadPecas();
-        }
-
-        function openRelatorioModal() {
-            document.getElementById('relatorioModal').style.display = 'block';
-            loadReports();
-        }
-
-        function closeRelatorioModal() {
-            document.getElementById('relatorioModal').style.display = 'none';
-        }
-
-        function loadReports() {
-            const reportTableBody = document.getElementById('reportTableBody');
-            reportTableBody.innerHTML = '';
-
-            reports.forEach(report => {
-                const row = document.createElement('tr');
-                const dateCell = document.createElement('td');
-                dateCell.textContent = report.date;
-                row.appendChild(dateCell);
-
-                const reasonCell = document.createElement('td');
-                reasonCell.textContent = report.reason;
-                row.appendChild(reasonCell);
-
-                const typeCell = document.createElement('td');
-                typeCell.textContent = report.type;
-                row.appendChild(typeCell);
-
-                reportTableBody.appendChild(row);
-            });
-        }
-
-        function enviarRelatorio(isLinha) {
-            const reason = prompt('Digite o motivo do relatório:');
-            if (reason) {
-                const report = {
-                    date: new Date().toLocaleDateString(),
-                    reason: reason,
-                    type: isLinha ? 'Linha' : 'Peça'
-                };
-                reports.push(report);
-                openRelatorioModal();
-            }
-        }
-
-        window.onload = loadPecas;
-    </script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+    <script src="../Js/app.js"></script>
+    <script src="../Js/Pecas.js"></script>
 </body>
 </html>

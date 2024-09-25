@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Máquinas</title>
-    <link rel="stylesheet" href="styles.css">
+    
     <style>
         /* Estilos para o container principal */
         h1{
@@ -295,150 +295,8 @@ tr:hover {
             </div>
         </div>
     </div>
-
-    <script>
-        let machineList = [];
-        let editIndex = null;
-        let reportsList = [];  // Adicionando uma lista para armazenar relatórios
-
-        // Função para filtrar as máquinas na tabela
-        document.getElementById('filterInput').addEventListener('keyup', function () {
-            const filterValue = this.value.toLowerCase();
-            const filteredMachines = machineList.filter(machine => 
-                machine.nome.toLowerCase().includes(filterValue)
-            );
-            renderMachines(filteredMachines);
-        });
-
-        function openMachineModal() {
-            editIndex = null;
-            document.getElementById('machineModalTitle').textContent = 'Adicionar Máquina';
-            document.getElementById('nomeMachine').value = '';
-            document.getElementById('dataEntradaMachine').value = '';
-            document.getElementById('dataSaidaMachine').value = '';
-            document.getElementById('emprestadaMachine').value = 'Sim';
-            document.getElementById('estoqueMachine').value = '';
-            document.getElementById('addMachineModal').style.display = 'block';
-        }
-
-        function closeMachineModal() {
-            document.getElementById('addMachineModal').style.display = 'none';
-        }
-
-        function openRelatorioModal() {
-            renderReports(reportsList);  // Renderizando os relatórios ao abrir o modal
-            document.getElementById('relatorioModal').style.display = 'block';
-        }
-
-        function closeRelatorioModal() {
-            document.getElementById('relatorioModal').style.display = 'none';
-        }
-
-        function salvarMachine() {
-            const nome = document.getElementById('nomeMachine').value;
-            const dataEntrada = document.getElementById('dataEntradaMachine').value;
-            const dataSaida = document.getElementById('dataSaidaMachine').value;
-            const emprestada = document.getElementById('emprestadaMachine').value;
-            const estoque = document.getElementById('estoqueMachine').value;
-
-            const newMachine = { nome, dataEntrada, dataSaida, emprestada, estoque };
-
-            if (editIndex === null) {
-                machineList.push(newMachine);
-            } else {
-                machineList[editIndex] = newMachine;
-                editIndex = null;
-            }
-
-            renderMachines(machineList);
-            closeMachineModal();
-        }
-
-        function renderMachines(machines) {
-            const tableBody = document.getElementById('machineTableBody');
-            tableBody.innerHTML = '';
-
-            machines.forEach((machine, index) => {
-                const row = document.createElement('tr');
-
-                row.innerHTML = `
-                    <td>${machine.nome}</td>
-                    <td>${machine.dataEntrada}</td>
-                    <td>${machine.dataSaida}</td>
-                    <td>${machine.emprestada}</td>
-                    <td>${machine.estoque}</td>
-                    <td class="actions">
-                        <button class="edit-btn" onclick="editMachine(${index})">Editar</button>
-                        <button class="delete-btn" onclick="deleteMachine(${index})">Excluir</button>
-                        <button class="report-btn" onclick="sendReport(${index})">Enviar Relatório</button>
-                    </td>
-                `;
-
-                tableBody.appendChild(row);
-            });
-        }
-
-        function editMachine(index) {
-            const machine = machineList[index];
-            editIndex = index;
-
-            document.getElementById('machineModalTitle').textContent = 'Editar Máquina';
-            document.getElementById('nomeMachine').value = machine.nome;
-            document.getElementById('dataEntradaMachine').value = machine.dataEntrada;
-            document.getElementById('dataSaidaMachine').value = machine.dataSaida;
-            document.getElementById('emprestadaMachine').value = machine.emprestada;
-            document.getElementById('estoqueMachine').value = machine.estoque;
-
-            document.getElementById('addMachineModal').style.display = 'block';
-        }
-
-        function deleteMachine(index) {
-            machineList.splice(index, 1);
-            renderMachines(machineList);
-        }
-
-        // Função para enviar relatório
-        function sendReport(index) {
-            const machine = machineList[index];
-
-            // Criando um novo relatório
-            const report = {
-                data: new Date().toLocaleDateString(),
-                motivo: `Relatório de ${machine.nome}`,
-                tipo: 'Manutenção'
-            };
-
-            // Adicionando o relatório à lista
-            reportsList.push(report);
-
-            // Abrindo o modal de relatórios
-            openRelatorioModal();
-        }
-
-        // Função para renderizar os relatórios no modal
-        function renderReports(reports) {
-            const reportTableBody = document.getElementById('reportTableBody');
-            reportTableBody.innerHTML = '';
-
-            reports.forEach(report => {
-                const row = document.createElement('tr');
-
-                row.innerHTML = `
-                    <td>${report.data}</td>
-                    <td>${report.motivo}</td>
-                    <td>${report.tipo}</td>
-                `;
-
-                reportTableBody.appendChild(row);
-            });
-        }
-
-        // Inicializar a tabela com alguns dados fictícios (opcional)
-        machineList = [
-            { nome: 'Máquina 1', dataEntrada: '2024-01-01', dataSaida: '', emprestada: 'Não', estoque: 10 },
-            { nome: 'Máquina 2', dataEntrada: '2024-02-01', dataSaida: '', emprestada: 'Sim', estoque: 5 }
-        ];
-        renderMachines(machineList);
-    </script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+    <script src="../Js/app.js"></script>
+    <script src="../Js/Maquinas.js"></script>
 </body>
 </html>
