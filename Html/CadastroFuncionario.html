@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Funcionário</title>
+    <link rel="stylesheet" href="../Css/CadastroFuncionarios.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Cadastro de Funcionário</h1>
+        <form id="employeeForm">
+            <div class="form-group">
+                <label for="name">Nome:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="position">Cargo:</label>
+                <input type="text" id="position" name="position" required>
+            </div>
+            <div class="form-group">
+                <label for="department">Departamento:</label>
+                <input type="text" id="department" name="department" required>
+            </div>
+            <div class="form-group">
+                <label for="hireDate">Data de Contratação:</label>
+                <input type="date" id="hireDate" name="hireDate" required>
+            </div>
+            <div class="form-group">
+                <label for="salary">Salário:</label>
+                <input type="number" id="salary" name="salary" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="address">Endereço:</label>
+                <input type="text" id="address" name="address" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Senha:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="group">Grupo:</label>
+                <select id="group" name="group" required>
+                    <option value="1">Grupo 1</option>
+                    <option value="2">Grupo 2</option>
+                    <option value="3">Grupo 3</option>
+                    <option value="4">Grupo 4</option>
+                    <option value="5">Grupo 5</option>
+                </select>
+            </div>
+            <div class="button-container">
+                <button type="button" class="button button-submit" onclick="submitForm()">Cadastrar</button>
+                <button type="button" class="button button-back" onclick="window.location.href='Gerente.html'">Voltar</button>
+            </div>
+        </form>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+    <script src="../Js/app.js"></script>
+    <script src="../Js/CadastroF.js"></script>
+</body>
+</html>

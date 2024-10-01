@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listagem de Pessoas</title>
+    <link rel="stylesheet" href="../Css/Pessoas.css">
+    
+    
+</head>
+<body>
+    <div class="container">
+        <h1>Listagem de Pessoas</h1>
+        <div class="filter-container">
+            <input type="text" id="searchName" placeholder="Nome">
+            <input type="text" id="searchPosition" placeholder="Cargo">
+            <input type="text" id="searchDepartment" placeholder="Departamento">
+            <input type="date" id="searchHireDate">
+            <input type="number" id="searchSalary" placeholder="Salário">
+            <input type="email" id="searchEmail" placeholder="Email">
+            <input type="text" id="searchAddress" placeholder="Endereço">
+            <input type="password" id="searchPassword" placeholder="Senha">
+            <select id="searchGroup">
+                <option value="">Grupo</option>
+                <option value="1">Grupo 1</option>
+                <option value="2">Grupo 2</option>
+                <option value="3">Grupo 3</option>
+                <option value="4">Grupo 4</option>
+                <option value="5">Grupo 5</option>
+            </select>
+            <button onclick="filterList()">Filtrar</button>
+        </div>
+        <table id="peopleTable">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Cargo</th>
+                    <th>Departamento</th>
+                    <th>Data de Contratação</th>
+                    <th>Salário</th>
+                    <th>Email</th>
+                    <th>Endereço</th>
+                    <th>Senha</th>
+                    <th>Grupo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- As linhas serão adicionadas aqui dinamicamente -->
+            </tbody>
+        </table>
+        <button class="button-back" onclick="window.location.href='Gerente.html'">Voltar</button>
+    </div>
+
+    <!-- Inclua o SDK do Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
+
+    <script>
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "SUA_API_KEY",
+            authDomain: "SEU_PROJETO.firebaseapp.com",
+            databaseURL: "https://SEU_PROJETO.firebaseio.com",
+            projectId: "SEU_PROJETO",
+            storageBucket: "SEU_PROJETO.appspot.com",
+            messagingSenderId: "SEU_MESSAGING_SENDER_ID",
+            appId: "SEU_APP_ID"
+        };
+
+        // Inicialize o Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        function filterList() {
+            const name = document.getElementById('searchName').value.toLowerCase();
+            const position = document.getElementById('searchPosition').value.toLowerCase();
+            const department = document.getElementById('searchDepartment').value.toLowerCase();
+            const hireDate = document.getElementById('searchHireDate').value;
+            const salary = parseFloat(document.getElementById('searchSalary').value);
+            const email = document.getElementById('searchEmail').value.toLowerCase();
+            const address = document.getElementById('searchAddress').value.toLowerCase();
+            const password = document.getElementById('searchPassword').value.toLowerCase();
+            const group = document.getElementById('searchGroup').value;
+
+            // Limpar a tabela
+            const tableBody = document.querySelector('#peopleTable tbody');
+            tableBody.innerHTML = '';
+
+            // Buscar funcionários e gerentes
+            const employeesRef = database.ref('employees');
+            const managersRef = database.ref('managers');
+
+            employeesRef.once('value').then((snapshot) => {
+                snapshot.forEach((childSnapshot) => {
+                    const data = childSnapshot.val();
+                    if (matchesFilter(data, name, position, department, hireDate, salary, email, address, password, group)) {
+                        addRowToTable(data);
+                    }
+                });
+            });
+
+            managersRef.once('value').then((snapshot) => {
+                snapshot.forEach((childSnapshot) => {
+                    const data = childSnapshot.val();
+                    if (matchesFilter(data, name, position, department, hireDate, salary, email, address, password, group)) {
+                        addRowToTable(data);
+                    }
+                });
+            });
+        }
+
+        function matchesFilter(data, name, position, department, hireDate, salary, email, address, password, group) {
+            return (name === '' || data.name.toLowerCase().includes(name)) &&
+                (position === '' || data.position.toLowerCase().includes(position)) &&
+                (department === '' || data.department.toLowerCase().includes(department)) &&
+                (hireDate === '' || data.hireDate === hireDate) &&
+                (isNaN(salary) || data.salary === salary) &&
+                (email === '' || data.email.toLowerCase().includes(email)) &&
+                (address === '' || data.address.toLowerCase().includes(address)) &&
+                (password === '' || data.password.toLowerCase().includes(password)) &&
+                (group === '' || data.group === group);
+        }
+
+        function addRowToTable(data) {
+            const tableBody = document.querySelector('#peopleTable tbody');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${data.name}</td>
+                <td>${data.position}</td>
+                <td>${data.department}</td>
+                <td>${data.hireDate}</td>
+                <td>${data.salary}</td>
+                <td>${data.email}</td>
+                <td>${data.address}</td>
+                <td>${data.password}</td>
+                <td>${data.group}</td>
+            `;
+            tableBody.appendChild(row);
+        }
+    </script>
+</body>
+</html>

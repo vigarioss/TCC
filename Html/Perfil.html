@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil do Funcionário</title>
+    <link rel="stylesheet" href="../Css/Perfil.css">
+    
+    
+</head>
+<body>
+    <div class="container">
+        <h1>Perfil do Funcionário</h1>
+        
+        <!-- Formulário de Perfil -->
+        <div class="profile-form">
+            <div class="form-group">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" readonly value="João da Silva">
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" readonly value="joao.silva@example.com">
+            </div>
+            <div class="form-group">
+                <label for="endereco">Endereço:</label>
+                <input type="text" id="endereco" readonly value="Rua das Flores, 123">
+            </div>
+            <div class="form-group">
+                <label for="salario">Salário:</label>
+                <input type="text" id="salario" readonly value="R$ 2.500,00">
+            </div>
+            <div class="form-group">
+                <label for="senha">Senha:</label>
+                <input type="password" id="senha" readonly value="********">
+            </div>
+            <div class="form-group">
+                <label for="grupo">Grupo:</label>
+                <input type="text" id="grupo" readonly value="1">
+            </div>
+            <div class="form-group">
+                <label for="dataEntrada">Data de Entrada:</label>
+                <input type="date" id="dataEntrada" readonly value="2024-01-15">
+            </div>
+        </div>
+
+        <!-- Resumo das Produções e Faltas -->
+        <div class="summary">
+            <h2>Resumo</h2>
+            <p><span class="label">Peças Produzidas:</span> 150</p>
+            <p><span class="label">Peças Faltantes:</span> 20</p>
+        </div>
+
+        <!-- Botões de Ação -->
+        <div class="button-container">
+            
+            <button onclick="window.location.href='Funcionário.html'">Voltar</button>
+        </div>
+    </div>
+</body>
+</html>

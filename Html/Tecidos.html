@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tecidos</title>
+    <link rel="stylesheet" href="../Css/Tecidos.css"> <!-- CSS permanece o mesmo -->
+</head>
+<body>
+    <div class="container">
+        <h1>Tecidos</h1>
+        <div class="button-container">
+            <button class="add-button" onclick="openModal()">Adicionar Tecido</button>
+            <button class="back-to-home" onclick="window.location.href='Gerente.html'">Voltar</button>
+        </div>
+        <input type="text" id="filterInput" class="filter-input" placeholder="Filtrar tecidos...">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Cor</th>
+                    <th>Tamanho</th>
+                    <th>Quantidade</th>
+                    <th>Data de Entrada</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="tecidoTableBody">
+                <!-- Tecidos serão carregados aqui dinamicamente -->
+            </tbody>
+        </table>
+
+        <!-- Modal para Adicionar/Editar Tecidos -->
+        <div id="addTecidoModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2 id="modalTitle">Adicionar Tecido</h2>
+                <form id="addTecidoForm">
+                    <div class="form-group">
+                        <label for="nomeTecido">Nome:</label>
+                        <input type="text" id="nomeTecido" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="corTecido">Cor:</label>
+                        <input type="text" id="corTecido" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tamanhoTecido">Tamanho:</label>
+                        <input type="number" id="tamanhoTecido" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantidadeTecido">Quantidade:</label>
+                        <input type="number" id="quantidadeTecido" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dataEntradaTecido">Data de Entrada:</label>
+                        <input type="date" id="dataEntradaTecido" required>
+                    </div>
+                    <button type="button"  id="salvarTecido" onclick="saveTecido()">Salvar</button>
+                </form>
+                <button class="back-to-home" onclick="closeModal()">Voltar</button>
+            </div>
+        </div>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+    <script src="../Js/app.js"></script>
+    <script src="../Js/Tecidos.js"></script>  <!-- Arquivo JavaScript externo -->
+</body>
+</html>

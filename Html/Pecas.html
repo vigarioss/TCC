@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produção de Peças</title>
+    <link rel="stylesheet" href="../Css/Pecas.css">
+    
+    
+</head>
+<body>
+    <div class="container">
+        <h1>Produção de Peças</h1>
+        <div class="button-container">
+            <button class="add-button" onclick="openModal()">Adicionar Peça</button>
+            <button class="back-to-home" onclick="window.location.href='Gerente.html'">Voltar</button>
+        </div>
+        <h2>Peças Produzidas</h2>
+        <input type="text" id="filterInput" class="filter-input" placeholder="Filtrar peças...">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome da Peça</th>
+                    <th>Tempo Médio de Produção</th>
+                    <th>Valor da Peça</th>
+                    <th>Linha</th>
+                    <th>Tecido</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="pecaTableBody">
+                <!-- Peças serão carregadas aqui dinamicamente -->
+            </tbody>
+        </table>
+
+        <!-- Modal para Adicionar/Editar Peças -->
+        <div id="addPecaModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2 id="modalTitle">Adicionar Peça</h2>
+                <form id="addPecaForm">
+                    <div class="form-group">
+                        <label for="nomePeca">Nome da Peça:</label>
+                        <input type="text" id="nomePeca" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tempoPeca">Tempo Médio de Produção:</label>
+                        <input type="text" id="tempoPeca" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="valorPeca">Valor da Peça:</label>
+                        <input type="number" id="valorPeca" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="linhaPeca">Linha:</label>
+                        <select id="linhaPeca" required>
+                            <!-- Opcionalmente carregar as linhas do banco de dados -->
+                            <option value="Linha A">Linha A</option>
+                            <option value="Linha B">Linha B</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="tecidoPeca">Tecido:</label>
+                        <select id="tecidoPeca" required>
+                            <!-- Opcionalmente carregar os tecidos do banco de dados -->
+                            <option value="Tecido A">Tecido A</option>
+                            <option value="Tecido B">Tecido B</option>
+                        </select>
+                    </div>
+                    <button type="button" class="add-button" onclick="salvarPeca()">Salvar</button>
+                </form>
+                <button class="back-to-home" onclick="closeModal()">Voltar</button>
+            </div>
+        </div>
+
+        <!-- Modal para Relatórios -->
+        <div id="relatorioModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeRelatorioModal()">&times;</span>
+                <h2>Relatórios Enviados</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Motivo</th>
+                            <th>Tipo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportTableBody">
+                        <!-- Relatórios serão carregados aqui dinamicamente -->
+                    </tbody>
+                </table>
+                <button class="back-to-home" onclick="closeRelatorioModal()">Fechar</button>
+            </div>
+        </div>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+    <script src="../Js/app.js"></script>
+    <script src="../Js/Pecas.js"></script>
+</body>
+</html>

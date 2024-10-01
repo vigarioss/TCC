@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Máquinas</title>
+    <link rel="stylesheet" href="../Css/Maquinas.css">
+    
+    
+</head>
+<body>
+    <div class="container">
+        <h1>Máquinas</h1>
+        <div class="button-container">
+            <button class="add-button" onclick="openMachineModal()">Adicionar Máquina</button>
+            <button class="back-to-home" onclick="window.location.href='Gerente.html'">Voltar</button>
+        </div>
+        <input type="text" id="filterInput" class="filter-input" placeholder="Filtrar máquinas...">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Data de Entrada</th>
+                    <th>Data de Saída</th>
+                    <th>Emprestada</th>
+                    <th>Estoque</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="machineTableBody">
+                <!-- Máquinas serão carregadas aqui dinamicamente -->
+            </tbody>
+        </table>
+
+        <!-- Modal para Adicionar/Editar Máquinas -->
+        <div id="addMachineModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeMachineModal()">&times;</span>
+                <h2 id="machineModalTitle">Adicionar Máquina</h2>
+                <form id="addMachineForm">
+                    <div class="form-group">
+                        <label for="nomeMachine">Nome:</label>
+                        <input type="text" id="nomeMachine" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dataEntradaMachine">Data de Entrada:</label>
+                        <input type="date" id="dataEntradaMachine" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dataSaidaMachine">Data de Saída:</label>
+                        <input type="date" id="dataSaidaMachine">
+                    </div>
+                    <div class="form-group">
+                        <label for="emprestadaMachine">Emprestada:</label>
+                        <select id="emprestadaMachine" required>
+                            <option value="Sim">Sim</option>
+                            <option value="Não">Não</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="estoqueMachine">Estoque:</label>
+                        <input type="number" id="estoqueMachine" required>
+                    </div>
+                    <button type="button" class="add-button" onclick="salvarMachine()">Salvar</button>
+                </form>
+                <button class="back-to-home" onclick="closeMachineModal()">Voltar</button>
+            </div>
+        </div>
+
+        <!-- Modal para Relatórios -->
+        <div id="relatorioModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeRelatorioModal()">&times;</span>
+                <h2>Relatórios Enviados</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Motivo</th>
+                            <th>Tipo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportTableBody">
+                        <!-- Relatórios serão carregados aqui dinamicamente -->
+                    </tbody>
+                </table>
+                <button class="back-to-home" onclick="closeRelatorioModal()">Fechar</button>
+            </div>
+        </div>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+    <script src="../Js/app.js"></script>
+    <script src="../Js/Maquinas.js"></script>
+</body>
+</html>

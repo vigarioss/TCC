@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios Enviados</title>
+    <link rel="stylesheet" href="../Css/Relatorio.css">
+    
+    
+</head>
+<body>
+    <div class="container">
+        <h1>Relatórios</h1>
+        <input type="text" id="filterInput" class="filter-input" placeholder="Filtrar relatórios...">
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Motivo</th>
+                    <th>Tipo</th>
+                </tr>
+            </thead>
+            <tbody id="reportTableBody">
+                <!-- Relatórios serão carregados aqui dinamicamente -->
+            </tbody>
+        </table>
+        <div class="button-container">
+            <button class="back-to-home" onclick="window.location.href='Gerente.html'">Voltar</button>
+        </div>
+    </div>
+
+    <script>
+        // Array de relatórios de exemplo
+        const reports = [
+            { date: '2024-08-25', reason: 'Pedido de reposição de tecidos', type: 'Tecido' },
+            { date: '2024-08-26', reason: 'Ajuste nas linhas de produção', type: 'Linha' }
+        ];
+        //puxa do firebase
+
+        function loadReports() {
+            const reportTableBody = document.getElementById('reportTableBody');
+            reportTableBody.innerHTML = '';
+
+            reports.forEach(report => {
+                const row = document.createElement('tr');
+                const dateCell = document.createElement('td');
+                dateCell.textContent = report.date;
+                row.appendChild(dateCell);
+
+                const reasonCell = document.createElement('td');
+                reasonCell.textContent = report.reason;
+                row.appendChild(reasonCell);
+
+                const typeCell = document.createElement('td');
+                typeCell.textContent = report.type;
+                row.appendChild(typeCell);
+
+                reportTableBody.appendChild(row);
+            });
+        }
+
+        document.getElementById('filterInput').addEventListener('input', function() {
+            const filter = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#reportTableBody tr');
+            rows.forEach(row => {
+                const cells = row.getElementsByTagName('td');
+                const reason = cells[1].textContent.toLowerCase();
+                if (reason.indexOf(filter) > -1) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        window.onload = loadReports;
+    </script>
+</body>
+</html>

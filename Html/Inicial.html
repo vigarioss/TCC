@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso ao Sistema</title>
+    <link rel="stylesheet" href="../Css/Inicio.css">
+    
+    
+</head>
+<body>
+
+<div class="container">
+    <h1>Acesso ao Sistema</h1>
+    <p>Selecione seu tipo de acesso:</p>
+    
+    <div class="options">
+        <div class="option">
+            <input type="radio" id="gerente" name="role" value="gerente">
+            <label for="gerente">Login como Gerente</label>
+        </div>
+        <div class="option">
+            <input type="radio" id="funcionario" name="role" value="funcionario">
+            <label for="funcionario">Login como Funcionário</label>
+        </div>
+    </div>
+    
+    <button onclick="proceed()">Continuar</button>
+</div>
+
+<script>
+    function proceed() {
+        const selectedRole = document.querySelector('input[name="role"]:checked');
+        if (!selectedRole) {
+            alert("Por favor, selecione um tipo de acesso.");
+            return;
+        }
+        
+        // Redirecionar baseado na seleção
+        if (selectedRole.value === 'gerente') {
+            window.location.href = 'authentication.html'; // Substitua pelo URL da página de login do gerente
+        } else {
+            window.location.href = 'authentication.html'; // Substitua pelo URL da página de login do funcionário
+        }
+    }
+</script>
+
+</body>
+</html>

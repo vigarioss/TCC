@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedidos</title>
+    <link rel="stylesheet" href="../Css/Pedidos.css">
+    
+   
+</head>
+<body>
+    <div class="container">
+        <h1>Pedidos</h1>
+        <div class="button-container">
+            <button class="add-button" onclick="openModal()">Adicionar Pedido</button>
+            <button class="back-to-home" onclick="window.location.href='Gerente.html'">Voltar</button>
+        </div>
+        <input type="text" id="filterInput" class="filter-input" placeholder="Filtrar pedidos...">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome (Contratante)</th>
+                    <th>Peça</th>
+                    <th>Quantidade</th>
+                    <th>Preço</th>
+                    <th>Data Recebido</th>
+                    <th>Data Vencimento</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="pedidoTableBody">
+                <!-- Pedidos serão carregados aqui dinamicamente -->
+            </tbody>
+        </table>
+
+        <!-- Modal para Adicionar/Editar Pedidos -->
+        <div id="addPedidoModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2 id="modalTitle">Adicionar Pedido</h2>
+                <form id="addPedidoForm">
+                    <div class="form-group">
+                        <label for="nomeContratante">Nome (Contratante):</label>
+                        <input type="text" id="nomeContratante" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="peca">Peça:</label>
+                        <input type="text" id="peca" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantidade">Quantidade:</label>
+                        <input type="number" id="quantidade" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="preco">Preço:</label>
+                        <input type="number" id="preco" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dataRecebido">Data Recebido:</label>
+                        <input type="date" id="dataRecebido" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dataVencimento">Data Vencimento:</label>
+                        <input type="date" id="dataVencimento" required>
+                    </div>
+                    <button type="button" class="add-button" onclick="salvarPedido()">Salvar</button>
+                </form>
+                <button class="back-to-home" onclick="closeModal()">Voltar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+    <script src="../Js/app.js"></script>
+    <script src="../Js/Pedidos.js"></script>
+</body>
+</html>

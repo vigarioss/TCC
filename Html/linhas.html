@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linhas</title>
+    <link rel="stylesheet" href="../Css/Linhas.css">
+
+</head>
+<body>
+    <div class="container">
+        <h1>Linhas</h1>
+        <div class="button-container">
+            <button class="add-button" onclick="openModal()">Adicionar Linha</button>
+            <button class="back-to-home" onclick="window.location.href='Gerente.html'">Voltar</button>
+        </div>
+        <input type="text" id="filterInput" class="filter-input" placeholder="Filtrar linhas...">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Tipo</th>
+                    <th>Tamanho</th>
+                    <th>Quantidade</th>
+                    <th>Estoque</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="linhaTableBody">
+                <!-- Linhas serão carregadas aqui dinamicamente -->
+            </tbody>
+        </table>
+
+        <!-- Modal para Adicionar/Editar Linhas -->
+        <div id="addLinhaModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2 id="modalTitle">Adicionar Linha</h2>
+                <form id="addLinhaForm">
+                    <div class="form-group">
+                        <label for="nomeLinha">Nome:</label>
+                        <input type="text" id="nomeLinha" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tipoLinha">Tipo:</label>
+                        <select id="tipoLinha" required>
+                            <option value="poliéster">Poliéster</option>
+                            <option value="fibra">Fibra</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="tamanhoLinha">Tamanho:</label>
+                        <input type="number" id="tamanhoLinha" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantidadeLinha">Quantidade:</label>
+                        <input type="number" id="quantidadeLinha" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="estoqueLinha">Estoque:</label>
+                        <input type="number" id="estoqueLinha" required>
+                    </div>
+                    <button type="button" class="add-button" onclick="salvarLinha()">Salvar</button>
+                </form>
+                <button class="back-to-home" onclick="closeModal()">Voltar</button>
+            </div>
+        </div>
+
+        <!-- Modal para Relatórios -->
+        <div id="relatorioModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeRelatorioModal()">&times;</span>
+                <h2>Relatórios Enviados</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Motivo</th>
+                            <th>Tipo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportTableBody">
+                        <!-- Relatórios serão carregados aqui dinamicamente -->
+                    </tbody>
+                </table>
+                <button class="back-to-home" onclick="closeRelatorioModal()">Fechar</button>
+            </div>
+        </div>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+    <script src="../Js/app.js"></script>
+    <script src="../Js/Linhas.js"></script>
+</body>
+</html>
