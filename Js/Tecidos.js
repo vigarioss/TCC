@@ -1,11 +1,11 @@
-var editKey = null; // Variável para verificar se está editando um tecido
+var editKey = null; 
 
-// Função para carregar a tabela de tecidos do Firebase
+
 function loadTecidos() {
     var tecidoTableBody = document.getElementById('tecidoTableBody');
-    tecidoTableBody.innerHTML = ''; // Limpa a tabela antes de renderizar
+    tecidoTableBody.innerHTML = ''; 
 
-    // Lê os dados do Firebase Realtime Database
+   
     firebase.database().ref('tecidos').once('value', function(snapshot) {
         snapshot.forEach(function(childSnapshot) {
             var tecido = childSnapshot.val();

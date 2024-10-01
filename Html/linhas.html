@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Linhas</title>
     <link rel="stylesheet" href="../Css/Linhas.css">
-
 </head>
 <body>
     <div class="container">
@@ -14,7 +13,7 @@
             <button class="add-button" onclick="openModal()">Adicionar Linha</button>
             <button class="back-to-home" onclick="window.location.href='Gerente.html'">Voltar</button>
         </div>
-        <input type="text" id="filterInput" class="filter-input" placeholder="Filtrar linhas...">
+        <input type="text" id="filterInput" class="filter-input" placeholder="Filtrar linhas..." onkeyup="filterLinhas()">
         <table>
             <thead>
                 <tr>
@@ -90,5 +89,26 @@
     <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
     <script src="../Js/app.js"></script>
     <script src="../Js/Linhas.js"></script>
+    <script>
+        // Função para filtrar linhas
+        function filterLinhas() {
+            const filter = document.getElementById('filterInput').value.toLowerCase();
+            const tableBody = document.getElementById('linhaTableBody');
+            const rows = tableBody.getElementsByTagName('tr');
+
+            for (let i = 0; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                let found = false;
+
+                for (let j = 0; j < cells.length; j++) {
+                    if (cells[j].textContent.toLowerCase().includes(filter)) {
+                        found = true;
+                        break;
+                    }
+                }
+                rows[i].style.display = found ? '' : 'none'; // Mostra ou oculta a linha
+            }
+        }
+    </script>
 </body>
 </html>

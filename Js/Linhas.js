@@ -1,6 +1,5 @@
-var editIndex = -1; // Variável para verificar se está editando ou criando nova linha
-
-var Botao = document.getElementById('salvarLinha');
+var editIndex = null; // Variável para verificar se está editando ou criando nova linha
+var Botao = document.querySelector('.add-button'); // Botão de salvar
 
 // Função para carregar a tabela de linhas do Firebase
 function loadLinhas() {
@@ -33,9 +32,8 @@ function loadLinhas() {
 // Função para abrir o modal de adição/edição de linhas
 function openModal() {
     document.getElementById('addLinhaModal').style.display = 'block';
-    document.getElementById('modalTitle').textContent = 'Adicionar Linha';
+    document.getElementById('modalTitle').textContent = editIndex === null ? 'Adicionar Linha' : 'Editar Linha';
     document.getElementById('addLinhaForm').reset(); // Reseta o formulário
-    editIndex = -1; // Define que é uma nova linha
 }
 
 // Função para fechar o modal
@@ -64,21 +62,27 @@ function salvarLinha() {
         estoque: estoque
     };
 
-    if (editIndex === -1) {
+    if (editIndex === null) {
         // Criar nova linha
-        return firebase.database().ref().child('linhas').push(data)
-            .then(() => loadLinhas()); // Recarregar as linhas após a criação
+        firebase.database().ref('linhas').push(data)
+            .then(() => {
+                loadLinhas(); // Recarregar as linhas após a criação
+                closeModal(); // Fechar o modal após salvar
+            });
     } else {
         // Atualizar linha existente
-        return firebase.database().ref('linhas/' + editIndex).update(data)
-            .then(() => loadLinhas()); // Recarregar as linhas após a atualização
+        firebase.database().ref('linhas/' + editIndex).update(data)
+            .then(() => {
+                loadLinhas(); // Recarregar as linhas após a atualização
+                closeModal(); // Fechar o modal após atualizar
+                editIndex = null; // Resetar editIndex
+            });
     }
 }
 
 // Função para editar uma linha
 function editLinha(key) {
     editIndex = key; // Armazena o ID da linha a ser editada
-    document.getElementById('modalTitle').textContent = 'Editar Linha';
 
     // Carregar dados da linha no formulário
     firebase.database().ref('linhas/' + key).once('value', function(snapshot) {
@@ -98,6 +102,26 @@ function deleteLinha(key) {
     if (confirm('Você tem certeza que deseja excluir esta linha?')) {
         firebase.database().ref('linhas/' + key).remove()
             .then(() => loadLinhas()); // Recarregar as linhas após a exclusão
+    }
+}
+
+// Função para filtrar linhas
+function filterLinhas() {
+    const filter = document.getElementById('filterInput').value.toLowerCase();
+    const tableBody = document.getElementById('linhaTableBody');
+    const rows = tableBody.getElementsByTagName('tr');
+
+    for (let i = 0; i < rows.length; i++) {
+        const cells = rows[i].getElementsByTagName('td');
+        let found = false;
+
+        for (let j = 0; j < cells.length; j++) {
+            if (cells[j].textContent.toLowerCase().includes(filter)) {
+                found = true;
+                break;
+            }
+        }
+        rows[i].style.display = found ? '' : 'none'; // Mostra ou oculta a linha
     }
 }
 

@@ -90,6 +90,33 @@ function deletarPedido(id) {
             });
     }
 }
+function atualizarTabela() {
+    const tabelaCorpo = document.querySelector('#tabelaRegistros tbody');
+    tabelaCorpo.innerHTML = ''; // Limpa a tabela antes de atualizar
 
+    registros.forEach(registro => {
+        const novaLinha = document.createElement('tr');
+        
+        const celulaId = document.createElement('td');
+        celulaId.textContent = registro.id;
+        novaLinha.appendChild(celulaId);
+
+        const celulaNome = document.createElement('td');
+        celulaNome.textContent = registro.nome;
+        novaLinha.appendChild(celulaNome);
+
+        const celulaIdade = document.createElement('td');
+        celulaIdade.textContent = registro.idade;
+        novaLinha.appendChild(celulaIdade);
+
+        tabelaCorpo.appendChild(novaLinha);
+    });
+}
+
+// Atualiza a tabela quando o botão é clicado
+document.getElementById('atualizarTabela').addEventListener('click', atualizarTabela);
+
+// Atualiza a tabela inicialmente
+atualizarTabela();
 // Carrega os pedidos ao inicializar a página
 window.onload = loadPedidos;
