@@ -1,17 +1,16 @@
-var editKey = null; // Variável para identificar se estamos editando uma linha
+var editKey = null; 
 
-// Função para carregar a tabela de linhas do Firebase
-function loadLinhas() {
-    const linhaTableBody = document.getElementById('linhaTableBody');
-    linhaTableBody.innerHTML = ''; // Limpa a tabela antes de renderizar
+// Função para carregar os tecidos do Firebase
+function loadTecidos() {
+    var tecidoTableBody = document.getElementById('linhaTableBody');
+    tecidoTableBody.innerHTML = ''; 
 
-    // Lê os dados do Firebase Realtime Database
     firebase.database().ref('linhas').once('value', function(snapshot) {
         snapshot.forEach(function(childSnapshot) {
-            const linha = childSnapshot.val();
-            const key = childSnapshot.key;
+            var linha = childSnapshot.val();
+            var key = childSnapshot.key;
 
-            const row = document.createElement('tr');
+            var row = document.createElement('tr');
             row.innerHTML = `
                 <td>${linha.nome}</td>
                 <td>${linha.tipo}</td>
@@ -19,11 +18,11 @@ function loadLinhas() {
                 <td>${linha.quantidade}</td>
                 <td>${linha.estoque}</td>
                 <td class="actions">
-                    <button class="edit-btn" onclick="editLinha('${key}')">Editar</button>
+                    <button class="edit-btn" onclick="editLinha('${key}', '${linha.nome}', '${linha.tipo}', '${linha.tamanho}', '${linha.quantidade}', '${linha.estoque}')">Editar</button>
                     <button class="delete-btn" onclick="deleteLinha('${key}')">Excluir</button>
                 </td>
             `;
-            linhaTableBody.appendChild(row);
+            tecidoTableBody.appendChild(row);
         });
     });
 }
@@ -31,18 +30,18 @@ function loadLinhas() {
 // Função para abrir o modal de adição/edição de linhas
 function openModal() {
     document.getElementById('addLinhaModal').style.display = 'block';
-    document.getElementById('modalTitle').textContent = 'Adicionar Linha';
+    document.getElementById('modalTitle').textContent = editKey ? 'Editar Linha' : 'Adicionar Linha';
     document.getElementById('addLinhaForm').reset(); // Reseta o formulário
-    editKey = null; // Define que é uma nova linha
 }
 
 // Função para fechar o modal
 function closeModal() {
     document.getElementById('addLinhaModal').style.display = 'none';
+    editKey = null; // Reseta a variável de edição ao fechar o modal
 }
 
 // Função para criar ou editar um registro no Firebase
-function salvarLinha() {
+function saveLinha() {
     const nome = document.getElementById('nomeLinha').value;
     const tipo = document.getElementById('tipoLinha').value;
     const tamanho = document.getElementById('tamanhoLinha').value;
@@ -56,86 +55,61 @@ function salvarLinha() {
     }
 
     if (editKey) {
-        // Exclui a linha antiga antes de criar uma nova
-        firebase.database().ref('linhas/' + editKey).remove().then(() => {
-            const data = {
-                nome,
-                tipo,
-                tamanho,
-                quantidade,
-                estoque
-            };
-            return firebase.database().ref('linhas').push(data); // Cria uma nova linha
+        // Atualiza os dados da linha
+        firebase.database().ref('linhas/' + editKey).update({
+            nome: nome,
+            tipo: tipo,
+            tamanho: Number(tamanho),
+            quantidade: Number(quantidade),
+            estoque: Number(estoque)
         }).then(() => {
-            loadLinhas(); // Carrega a tabela novamente após a criação
+            loadTecidos(); // Carrega a tabela novamente após a atualização
             closeModal(); // Fecha o modal após salvar
             editKey = null; // Reseta o editKey após salvar
-        }).catch((error) => {
-            console.error("Erro ao atualizar a linha:", error);
         });
     } else {
         // Cria uma nova linha
-        const data = {
-            nome,
-            tipo,
-            tamanho,
-            quantidade,
-            estoque
+        var data = {
+            nome: nome,
+            tipo: tipo,
+            tamanho: Number(tamanho),
+            quantidade: Number(quantidade),
+            estoque: Number(estoque)
         };
         return firebase.database().ref('linhas').push(data).then(() => {
-            loadLinhas(); // Carrega a tabela novamente após a criação
+            loadTecidos(); // Carrega a tabela novamente após a criação
             closeModal(); // Fecha o modal após salvar
-        }).catch((error) => {
-            console.error("Erro ao adicionar a linha:", error);
         });
     }
 }
 
 // Função para editar uma linha
-function editLinha(key) {
-    editKey = key; // Armazena o ID da linha a ser editada
-    document.getElementById('modalTitle').textContent = 'Editar Linha';
-
-    // Carregar dados da linha no formulário
-    firebase.database().ref('linhas/' + key).once('value', function(snapshot) {
-        const linha = snapshot.val();
-        document.getElementById('nomeLinha').value = linha.nome;
-        document.getElementById('tipoLinha').value = linha.tipo;
-        document.getElementById('tamanhoLinha').value = linha.tamanho;
-        document.getElementById('quantidadeLinha').value = linha.quantidade;
-        document.getElementById('estoqueLinha').value = linha.estoque;
-    });
-
-    openModal(); // Abre o modal para edição
+function editLinha(key, nome, tipo, tamanho, quantidade, estoque) {
+    editKey = key; // Define o key da linha que será editada
+    document.getElementById('nomeLinha').value = nome;
+    document.getElementById('tipoLinha').value = tipo;
+    document.getElementById('tamanhoLinha').value = tamanho;
+    document.getElementById('quantidadeLinha').value = quantidade;
+    document.getElementById('estoqueLinha').value = estoque;
+    openModal(); // Abre o modal com os dados preenchidos
 }
 
-// Função para excluir uma linha
+// Função para excluir uma linha do Firebase
 function deleteLinha(key) {
-    if (confirm('Você tem certeza que deseja excluir esta linha?')) {
+    if (confirm("Tem certeza que deseja excluir esta linha?")) {
         firebase.database().ref('linhas/' + key).remove()
-            .then(() => loadLinhas()); // Recarregar as linhas após a exclusão
+            .then(() => {
+                loadTecidos(); // Recarrega a tabela após a exclusão
+                alert("Linha excluída com sucesso.");
+            })
+            .catch((error) => {
+                console.error("Erro ao excluir a linha: ", error);
+                alert("Erro ao excluir a linha. Tente novamente.");
+            });
     }
 }
 
-// Função para filtrar linhas
-function filterLinhas() {
-    const filter = document.getElementById('filterInput').value.toLowerCase();
-    const tableBody = document.getElementById('linhaTableBody');
-    const rows = tableBody.getElementsByTagName('tr');
-
-    for (let i = 0; i < rows.length; i++) {
-        const cells = rows[i].getElementsByTagName('td');
-        let found = false;
-
-        for (let j = 0; j < cells.length; j++) {
-            if (cells[j].textContent.toLowerCase().includes(filter)) {
-                found = true;
-                break;
-            }
-        }
-        rows[i].style.display = found ? '' : 'none'; // Mostra ou oculta a linha
-    }
-}
-
-// Chamada inicial para carregar linhas
-loadLinhas();
+// Chama a função de carregar linhas ao abrir a página
+window.onload = function() {
+    loadTecidos();
+};

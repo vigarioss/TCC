@@ -1,7 +1,5 @@
 var editIndex = null; // Variável para verificar se está editando ou criando nova peça
 
-var Botao = document.getElementById('salvarPeca');
-
 // Função para carregar a tabela de peças do Firebase
 function loadPecas() {
     var pecaTableBody = document.getElementById('pecaTableBody');
@@ -33,22 +31,17 @@ function loadPecas() {
 // Função para abrir o modal de adição/edição de peças
 function openModal() {
     document.getElementById('addPecaModal').style.display = 'block';
-    document.getElementById('modalTitle').textContent = 'Adicionar Peça';
+    document.getElementById('modalTitle').textContent = editIndex ? 'Editar Peça' : 'Adicionar Peça';
     document.getElementById('addPecaForm').reset(); // Reseta o formulário
-    editIndex = null; // Define que é uma nova peça
 }
 
 // Função para fechar o modal
 function closeModal() {
     document.getElementById('addPecaModal').style.display = 'none';
+    editIndex = null; // Reseta a variável de edição ao fechar o modal
 }
 
 // Função para salvar peça
-Botao.addEventListener('click', function () {
-    salvarPeca();
-});
-
-// Função para criar ou atualizar uma peça no Firebase
 function salvarPeca() {
     var nome = document.getElementById('nomePeca').value;
     var tempo = document.getElementById('tempoPeca').value;
@@ -66,7 +59,7 @@ function salvarPeca() {
 
     if (editIndex === null) {
         // Criar nova peça
-        return firebase.database().ref().child('pecas').push(data)
+        return firebase.database().ref('pecas').push(data)
             .then(() => {
                 loadPecas(); // Recarregar as peças após a criação
                 closeModal(); // Fecha o modal
@@ -108,4 +101,4 @@ function deletePeca(key) {
 }
 
 // Chamada inicial para carregar peças
-loadPecas();
+window.onload = loadPecas;

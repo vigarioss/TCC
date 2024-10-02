@@ -1,11 +1,10 @@
 var editKey = null; 
 
-
+// Função para carregar os tecidos do Firebase
 function loadTecidos() {
     var tecidoTableBody = document.getElementById('tecidoTableBody');
     tecidoTableBody.innerHTML = ''; 
 
-   
     firebase.database().ref('tecidos').once('value', function(snapshot) {
         snapshot.forEach(function(childSnapshot) {
             var tecido = childSnapshot.val();
@@ -57,41 +56,40 @@ function saveTecido() {
 
     if (editKey) {
         // Atualiza os dados do tecido
-        firebase.database().ref('tecidos/' + editKey).once('value').then((snapshot) => {
-            const existingData = snapshot.val();
+        var updatedData = {
+            nome: nome,
+            cor: cor,
+            tamanho: tamanho,
+            quantidade: Number(quantidade),
+            dataEntrada: dataEntrada
+        };
 
-            // Atualiza apenas os campos que foram alterados
-            var updatedData = {};
-            if (nome) updatedData.nome = nome;
-            else updatedData.nome = existingData.nome;
-            if (cor) updatedData.cor = cor;
-            else updatedData.cor = existingData.cor;
-            if (tamanho) updatedData.tamanho = tamanho;
-            else updatedData.tamanho = existingData.tamanho;
-            if (quantidade) updatedData.quantidade = quantidade;
-            else updatedData.quantidade = existingData.quantidade;
-            if (dataEntrada) updatedData.dataEntrada = dataEntrada;
-            else updatedData.dataEntrada = existingData.dataEntrada;
-
-            return firebase.database().ref('tecidos/' + editKey).update(updatedData);
-        }).then(() => {
-            loadTecidos(); // Carrega a tabela novamente após a atualização
-            closeModal(); // Fecha o modal após salvar
-            editKey = null; // Reseta o editKey após salvar
-        });
+        firebase.database().ref('tecidos/' + editKey).update(updatedData)
+            .then(() => {
+                loadTecidos(); // Carrega a tabela novamente após a atualização
+                closeModal(); // Fecha o modal após salvar
+                editKey = null; // Reseta o editKey após salvar
+            })
+            .catch(error => {
+                console.error("Erro ao atualizar o tecido: ", error);
+            });
     } else {
         // Cria um novo tecido
         var data = {
             nome: nome,
             cor: cor,
             tamanho: tamanho,
-            quantidade: quantidade,
+            quantidade: Number(quantidade),
             dataEntrada: dataEntrada
         };
-        return firebase.database().ref('tecidos').push(data).then(() => {
-            loadTecidos(); // Carrega a tabela novamente após a criação
-            closeModal(); // Fecha o modal após salvar
-        });
+        firebase.database().ref('tecidos').push(data)
+            .then(() => {
+                loadTecidos(); // Carrega a tabela novamente após a criação
+                closeModal(); // Fecha o modal após salvar
+            })
+            .catch(error => {
+                console.error("Erro ao criar o tecido: ", error);
+            });
     }
 }
 

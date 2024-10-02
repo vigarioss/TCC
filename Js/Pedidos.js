@@ -1,3 +1,5 @@
+var editKey = null; // Variável para armazenar a chave do pedido sendo editado
+
 // Função para abrir o modal
 function openModal() {
     document.getElementById('addPedidoModal').style.display = 'block';
@@ -6,11 +8,11 @@ function openModal() {
 // Função para fechar o modal
 function closeModal() {
     document.getElementById('addPedidoModal').style.display = 'none';
+    editKey = null; // Reseta a chave de edição ao fechar o modal
 }
 
 // Função para salvar um pedido no Firebase
 function salvarPedido() {
-    // Obtém os valores dos campos do formulário
     const nomeContratante = document.getElementById('nomeContratante').value;
     const peca = document.getElementById('peca').value;
     const quantidade = parseInt(document.getElementById('quantidade').value);
@@ -18,28 +20,42 @@ function salvarPedido() {
     const dataRecebido = document.getElementById('dataRecebido').value;
     const dataVencimento = document.getElementById('dataVencimento').value;
 
-    // Cria um objeto com os dados do pedido
     const pedidoData = {
-        nomeContratante: nomeContratante,
-        peca: peca,
-        quantidade: quantidade,
-        preco: preco,
-        dataRecebido: dataRecebido,
-        dataVencimento: dataVencimento
+        nomeContratante,
+        peca,
+        quantidade,
+        preco,
+        dataRecebido,
+        dataVencimento
     };
 
-    // Envia os dados para o Firebase
-    firebase.database().ref('pedidos').push(pedidoData)
-        .then(() => {
-            alert('Pedido cadastrado com sucesso!'); // Mensagem de sucesso
-            document.getElementById('addPedidoForm').reset(); // Limpa o formulário
-            closeModal(); // Fecha o modal
-            loadPedidos(); // Atualiza a tabela de pedidos
-        })
-        .catch((error) => {
-            console.error('Erro ao cadastrar pedido:', error);
-            alert('Ocorreu um erro ao cadastrar o pedido.'); // Mensagem de erro
-        });
+    if (editKey) {
+        // Atualiza o pedido existente
+        firebase.database().ref('pedidos/' + editKey).update(pedidoData)
+            .then(() => {
+                alert('Pedido atualizado com sucesso!'); // Mensagem de sucesso
+                document.getElementById('addPedidoForm').reset(); // Limpa o formulário
+                closeModal(); // Fecha o modal
+                loadPedidos(); // Atualiza a tabela de pedidos
+            })
+            .catch((error) => {
+                console.error('Erro ao atualizar pedido:', error);
+                alert('Ocorreu um erro ao atualizar o pedido.'); // Mensagem de erro
+            });
+    } else {
+        // Envia os dados para o Firebase
+        firebase.database().ref('pedidos').push(pedidoData)
+            .then(() => {
+                alert('Pedido cadastrado com sucesso!'); // Mensagem de sucesso
+                document.getElementById('addPedidoForm').reset(); // Limpa o formulário
+                closeModal(); // Fecha o modal
+                loadPedidos(); // Atualiza a tabela de pedidos
+            })
+            .catch((error) => {
+                console.error('Erro ao cadastrar pedido:', error);
+                alert('Ocorreu um erro ao cadastrar o pedido.'); // Mensagem de erro
+            });
+    }
 }
 
 // Função para carregar os pedidos do Firebase
@@ -47,7 +63,6 @@ function loadPedidos() {
     const pedidoTableBody = document.getElementById('pedidoTableBody');
     pedidoTableBody.innerHTML = ''; // Limpa a tabela
 
-    // Obtém os pedidos do Firebase
     firebase.database().ref('pedidos').on('value', (snapshot) => {
         snapshot.forEach((childSnapshot) => {
             const pedido = childSnapshot.val();
@@ -73,7 +88,20 @@ function loadPedidos() {
 
 // Função para editar um pedido
 function editarPedido(id) {
-    // Lógica para editar um pedido (pode ser implementada conforme necessidade)
+    editKey = id; // Armazena a chave do pedido que está sendo editado
+
+    // Obtém os dados do pedido para preencher o formulário
+    firebase.database().ref('pedidos/' + editKey).once('value').then((snapshot) => {
+        const pedido = snapshot.val();
+        document.getElementById('nomeContratante').value = pedido.nomeContratante;
+        document.getElementById('peca').value = pedido.peca;
+        document.getElementById('quantidade').value = pedido.quantidade;
+        document.getElementById('preco').value = pedido.preco;
+        document.getElementById('dataRecebido').value = pedido.dataRecebido;
+        document.getElementById('dataVencimento').value = pedido.dataVencimento;
+
+        openModal(); // Abre o modal com os dados do pedido preenchidos
+    });
 }
 
 // Função para deletar um pedido
@@ -90,33 +118,6 @@ function deletarPedido(id) {
             });
     }
 }
-function atualizarTabela() {
-    const tabelaCorpo = document.querySelector('#tabelaRegistros tbody');
-    tabelaCorpo.innerHTML = ''; // Limpa a tabela antes de atualizar
 
-    registros.forEach(registro => {
-        const novaLinha = document.createElement('tr');
-        
-        const celulaId = document.createElement('td');
-        celulaId.textContent = registro.id;
-        novaLinha.appendChild(celulaId);
-
-        const celulaNome = document.createElement('td');
-        celulaNome.textContent = registro.nome;
-        novaLinha.appendChild(celulaNome);
-
-        const celulaIdade = document.createElement('td');
-        celulaIdade.textContent = registro.idade;
-        novaLinha.appendChild(celulaIdade);
-
-        tabelaCorpo.appendChild(novaLinha);
-    });
-}
-
-// Atualiza a tabela quando o botão é clicado
-document.getElementById('atualizarTabela').addEventListener('click', atualizarTabela);
-
-// Atualiza a tabela inicialmente
-atualizarTabela();
 // Carrega os pedidos ao inicializar a página
 window.onload = loadPedidos;

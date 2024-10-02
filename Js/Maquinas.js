@@ -1,13 +1,10 @@
-var editIndex = null; // Variável para verificar se está editando ou criando nova máquina
+var editKey = null; 
 
-var Botao = document.getElementById('salvarMachine');
-
-// Função para carregar a tabela de máquinas do Firebase
+// Função para carregar as máquinas do Firebase
 function loadMachines() {
     var machineTableBody = document.getElementById('machineTableBody');
-    machineTableBody.innerHTML = ''; // Limpa a tabela antes de renderizar
+    machineTableBody.innerHTML = ''; 
 
-    // Lê os dados do Firebase Realtime Database
     firebase.database().ref('maquinas').once('value', function(snapshot) {
         snapshot.forEach(function(childSnapshot) {
             var machine = childSnapshot.val();
@@ -21,7 +18,7 @@ function loadMachines() {
                 <td>${machine.emprestada}</td>
                 <td>${machine.estoque}</td>
                 <td class="actions">
-                    <button class="edit-btn" onclick="editMachine('${key}')">Editar</button>
+                    <button class="edit-btn" onclick="editMachine('${key}', '${machine.nome}', '${machine.dataEntrada}', '${machine.dataSaida}', '${machine.emprestada}', '${machine.estoque}')">Editar</button>
                     <button class="delete-btn" onclick="deleteMachine('${key}')">Excluir</button>
                 </td>
             `;
@@ -33,79 +30,86 @@ function loadMachines() {
 // Função para abrir o modal de adição/edição de máquinas
 function openMachineModal() {
     document.getElementById('addMachineModal').style.display = 'block';
-    document.getElementById('machineModalTitle').textContent = 'Adicionar Máquina';
-    document.getElementById('addMachineForm').reset(); // Reseta o formulário
-    editIndex = null; // Define que é uma nova máquina
+    document.getElementById('machineModalTitle').textContent = editKey ? 'Editar Máquina' : 'Adicionar Máquina';
+    document.getElementById('addMachineForm').reset();
 }
 
 // Função para fechar o modal
 function closeMachineModal() {
     document.getElementById('addMachineModal').style.display = 'none';
+    editKey = null; // Reseta a variável de edição ao fechar o modal
 }
 
-// Função para salvar máquina
-Botao.addEventListener('click', function () {
-    salvarMachine();
-});
-
-// Função para criar ou atualizar uma máquina no Firebase
+// Função para criar ou editar um registro no Firebase
 function salvarMachine() {
-    var nome = document.getElementById('nomeMachine').value;
-    var dataEntrada = document.getElementById('dataEntradaMachine').value;
-    var dataSaida = document.getElementById('dataSaidaMachine').value;
-    var emprestada = document.getElementById('emprestadaMachine').value;
-    var estoque = document.getElementById('estoqueMachine').value;
+    const nome = document.getElementById('nomeMachine').value;
+    const dataEntrada = document.getElementById('dataEntradaMachine').value;
+    const dataSaida = document.getElementById('dataSaidaMachine').value;
+    const emprestada = document.getElementById('emprestadaMachine').value;
+    const estoque = document.getElementById('estoqueMachine').value;
 
-    var data = {
-        nome: nome,
-        dataEntrada: dataEntrada,
-        dataSaida: dataSaida,
-        emprestada: emprestada,
-        estoque: estoque
-    };
+    // Verifica se todos os campos necessários estão preenchidos
+    if (!nome || !dataEntrada || !emprestada || !estoque) {
+        alert("Todos os campos obrigatórios devem ser preenchidos.");
+        return;
+    }
 
-    if (editIndex === null) {
-        // Criar nova máquina
-        return firebase.database().ref().child('maquinas').push(data)
-            .then(() => {
-                loadMachines(); // Recarregar as máquinas após a criação
-                closeMachineModal(); // Fecha o modal
-            });
+    if (editKey) {
+        // Atualiza os dados da máquina
+        firebase.database().ref('maquinas/' + editKey).update({
+            nome: nome,
+            dataEntrada: dataEntrada,
+            dataSaida: dataSaida,
+            emprestada: emprestada,
+            estoque: Number(estoque)
+        }).then(() => {
+            loadMachines();
+            closeMachineModal();
+            editKey = null;
+        });
     } else {
-        // Atualizar máquina existente
-        return firebase.database().ref('maquinas/' + editIndex).update(data)
-            .then(() => {
-                loadMachines(); // Recarregar as máquinas após a atualização
-                closeMachineModal(); // Fecha o modal
-            });
+        // Cria uma nova máquina
+        var data = {
+            nome: nome,
+            dataEntrada: dataEntrada,
+            dataSaida: dataSaida,
+            emprestada: emprestada,
+            estoque: Number(estoque)
+        };
+        firebase.database().ref('maquinas').push(data).then(() => {
+            loadMachines();
+            closeMachineModal();
+        });
     }
 }
 
 // Função para editar uma máquina
-function editMachine(key) {
-    editIndex = key; // Armazena o ID da máquina a ser editada
-    document.getElementById('machineModalTitle').textContent = 'Editar Máquina';
-
-    // Carregar dados da máquina no formulário
-    firebase.database().ref('maquinas/' + key).once('value', function(snapshot) {
-        var machine = snapshot.val();
-        document.getElementById('nomeMachine').value = machine.nome;
-        document.getElementById('dataEntradaMachine').value = machine.dataEntrada;
-        document.getElementById('dataSaidaMachine').value = machine.dataSaida || ''; // Atribui valor ou string vazia
-        document.getElementById('emprestadaMachine').value = machine.emprestada;
-        document.getElementById('estoqueMachine').value = machine.estoque;
-    });
-
-    openMachineModal(); // Abre o modal para edição
+function editMachine(key, nome, dataEntrada, dataSaida, emprestada, estoque) {
+    editKey = key; // Define o key da máquina que será editada
+    document.getElementById('nomeMachine').value = nome;
+    document.getElementById('dataEntradaMachine').value = dataEntrada;
+    document.getElementById('dataSaidaMachine').value = dataSaida || '';
+    document.getElementById('emprestadaMachine').value = emprestada;
+    document.getElementById('estoqueMachine').value = estoque;
+    openMachineModal(); // Abre o modal com os dados preenchidos
 }
 
-// Função para excluir uma máquina
+// Função para excluir uma máquina do Firebase
 function deleteMachine(key) {
-    if (confirm('Você tem certeza que deseja excluir esta máquina?')) {
+    if (confirm("Tem certeza que deseja excluir esta máquina?")) {
         firebase.database().ref('maquinas/' + key).remove()
-            .then(() => loadMachines()); // Recarregar as máquinas após a exclusão
+            .then(() => {
+                loadMachines();
+                alert("Máquina excluída com sucesso.");
+            })
+            .catch((error) => {
+                console.error("Erro ao excluir a máquina: ", error);
+                alert("Erro ao excluir a máquina. Tente novamente.");
+            });
     }
 }
 
-// Chamada inicial para carregar máquinas
-loadMachines();
+// Chama a função de carregar máquinas ao abrir a página
+window.onload = function() {
+    loadMachines();
+};
