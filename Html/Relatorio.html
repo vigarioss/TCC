@@ -83,53 +83,5 @@
         </div>
     </div>
 
-    <script>
-        // Array de relatórios de exemplo
-        const reports = [
-            { date: '2024-08-25', reason: 'Pedido de reposição de tecidos', type: 'Tecido' },
-            { date: '2024-08-26', reason: 'Ajuste nas linhas de produção', type: 'Linha' }
-        ];
-
-        // Carregar relatórios
-        function loadReports() {
-            const reportTableBody = document.getElementById('reportTableBody');
-            reportTableBody.innerHTML = '';
-
-            reports.forEach(report => {
-                const row = document.createElement('tr');
-                const dateCell = document.createElement('td');
-                dateCell.textContent = report.date;
-                row.appendChild(dateCell);
-
-                const reasonCell = document.createElement('td');
-                reasonCell.textContent = report.reason;
-                row.appendChild(reasonCell);
-
-                const typeCell = document.createElement('td');
-                typeCell.textContent = report.type;
-                row.appendChild(typeCell);
-
-                reportTableBody.appendChild(row);
-            });
-        }
-
-        // Filtro
-        document.getElementById('filterInput').addEventListener('input', function() {
-            const filter = this.value.toLowerCase();
-            const rows = document.querySelectorAll('#reportTableBody tr');
-            rows.forEach(row => {
-                const cells = row.getElementsByTagName('td');
-                const reason = cells[1].textContent.toLowerCase();
-                if (reason.indexOf(filter) > -1) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        });
-
-        // Carregar relatórios ao carregar a página
-        window.onload = loadReports;
-    </script>
 </body>
 </html>

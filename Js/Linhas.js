@@ -32,6 +32,18 @@ function openModal() {
     document.getElementById('addLinhaModal').style.display = 'block';
     document.getElementById('modalTitle').textContent = editKey ? 'Editar Linha' : 'Adicionar Linha';
     document.getElementById('addLinhaForm').reset(); // Reseta o formulário
+
+    // Se estiver editando, preenche o formulário
+    if (editKey) {
+        firebase.database().ref('linhas/' + editKey).once('value').then(snapshot => {
+            const linha = snapshot.val();
+            document.getElementById('nomeLinha').value = linha.nome;
+            document.getElementById('tipoLinha').value = linha.tipo;
+            document.getElementById('tamanhoLinha').value = linha.tamanho;
+            document.getElementById('quantidadeLinha').value = linha.quantidade;
+            document.getElementById('estoqueLinha').value = linha.estoque;
+        });
+    }
 }
 
 // Função para fechar o modal
@@ -66,6 +78,9 @@ function saveLinha() {
             loadTecidos(); // Carrega a tabela novamente após a atualização
             closeModal(); // Fecha o modal após salvar
             editKey = null; // Reseta o editKey após salvar
+        }).catch((error) => {
+            console.error("Erro ao atualizar a linha: ", error);
+            alert("Erro ao atualizar a linha. Tente novamente.");
         });
     } else {
         // Cria uma nova linha
@@ -76,9 +91,12 @@ function saveLinha() {
             quantidade: Number(quantidade),
             estoque: Number(estoque)
         };
-        return firebase.database().ref('linhas').push(data).then(() => {
+        firebase.database().ref('linhas').push(data).then(() => {
             loadTecidos(); // Carrega a tabela novamente após a criação
             closeModal(); // Fecha o modal após salvar
+        }).catch((error) => {
+            console.error("Erro ao salvar a linha: ", error);
+            alert("Erro ao salvar a linha. Tente novamente.");
         });
     }
 }
@@ -86,11 +104,6 @@ function saveLinha() {
 // Função para editar uma linha
 function editLinha(key, nome, tipo, tamanho, quantidade, estoque) {
     editKey = key; // Define o key da linha que será editada
-    document.getElementById('nomeLinha').value = nome;
-    document.getElementById('tipoLinha').value = tipo;
-    document.getElementById('tamanhoLinha').value = tamanho;
-    document.getElementById('quantidadeLinha').value = quantidade;
-    document.getElementById('estoqueLinha').value = estoque;
     openModal(); // Abre o modal com os dados preenchidos
 }
 
