@@ -14,21 +14,25 @@
             <button class="back-to-home" onclick="window.location.href='Gerente.html'">Voltar</button>
         </div>
         <input type="text" id="filterInput" class="filter-input" placeholder="Filtrar máquinas...">
-        <table>
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Data de Entrada</th>
-                    <th>Data de Saída</th>
-                    <th>Emprestada</th>
-                    <th>Estoque</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody id="machineTableBody">
-                <!-- Máquinas serão carregadas aqui dinamicamente -->
-            </tbody>
-        </table>
+        
+        <!-- Container para a tabela com rolagem -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Data de Entrada</th>
+                        <th>Data de Saída</th>
+                        <th>Emprestada</th>
+                        <th>Estoque</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="machineTableBody">
+                    <!-- Máquinas serão carregadas aqui dinamicamente -->
+                </tbody>
+            </table>
+        </div>
 
         <!-- Modal para Adicionar/Editar Máquinas -->
         <div id="addMachineModal" class="modal">

@@ -14,21 +14,23 @@
             <button class="back-to-home" onclick="window.location.href='Gerente.html'">Voltar</button>
         </div>
         <input type="text" id="filterInput" class="filter-input" placeholder="Filtrar tecidos...">
-        <table>
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Cor</th>
-                    <th>Tamanho</th>
-                    <th>Quantidade</th>
-                    <th>Data de Entrada</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody id="tecidoTableBody">
-                <!-- Tecidos serão carregados aqui dinamicamente -->
-            </tbody>
-        </table>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Cor</th>
+                        <th>Tamanho</th>
+                        <th>Quantidade</th>
+                        <th>Data de Entrada</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="tecidoTableBody">
+                    <!-- Tecidos serão carregados aqui dinamicamente -->
+                </tbody>
+            </table>
+        </div>
 
         <!-- Modal para Adicionar/Editar Tecidos -->
         <div id="addTecidoModal" class="modal">
@@ -56,7 +58,7 @@
                         <label for="dataEntradaTecido">Data de Entrada:</label>
                         <input type="date" id="dataEntradaTecido" required>
                     </div>
-                    <button type="button"  id="salvarTecido" onclick="saveTecido()">Salvar</button>
+                    <button type="button" id="salvarTecido" onclick="saveTecido()">Salvar</button>
                 </form>
                 <button class="back-to-home" onclick="closeModal()">Voltar</button>
             </div>

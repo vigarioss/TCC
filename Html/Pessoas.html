@@ -27,23 +27,28 @@
             </select>
             <button onclick="filterList()">Filtrar</button>
         </div>
-        <table id="peopleTable">
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Cargo</th>
-                    <th>Departamento</th>
-                    <th>Data de Contratação</th>
-                    <th>Salário</th>
-                    <th>Email</th>
-                    <th>Endereço</th>
-                    <th>Grupo</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- As linhas serão adicionadas aqui dinamicamente -->
-            </tbody>
-        </table>
+
+        <!-- Container para a tabela com rolagem -->
+        <div class="table-container">
+            <table id="peopleTable">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Cargo</th>
+                        <th>Departamento</th>
+                        <th>Data de Contratação</th>
+                        <th>Salário</th>
+                        <th>Email</th>
+                        <th>Endereço</th>
+                        <th>Grupo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- As linhas serão adicionadas aqui dinamicamente -->
+                </tbody>
+            </table>
+        </div>
+
         <button class="button-back" onclick="window.location.href='Gerente.html'">Voltar</button>
     </div>
     <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>

@@ -14,21 +14,25 @@
             <button class="back-to-home" onclick="window.location.href='Gerente.html'">Voltar</button>
         </div>
         <input type="text" id="filterInput" class="filter-input" placeholder="Filtrar peças...">
-        <table>
-            <thead>
-                <tr>
-                    <th>Nome da Peça</th>
-                    <th>Tempo Médio de Produção</th>
-                    <th>Valor da Peça</th>
-                    <th>Linha</th>
-                    <th>Tecido</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody id="pecaTableBody">
-                <!-- Peças serão carregadas aqui dinamicamente -->
-            </tbody>
-        </table>
+        
+        <!-- Container para a tabela com rolagem -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome da Peça</th>
+                        <th>Tempo Médio de Produção</th>
+                        <th>Valor da Peça</th>
+                        <th>Linha</th>
+                        <th>Tecido</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="pecaTableBody">
+                    <!-- Peças serão carregadas aqui dinamicamente -->
+                </tbody>
+            </table>
+        </div>
 
         <!-- Modal para Adicionar/Editar Peças -->
         <div id="addPecaModal" class="modal">

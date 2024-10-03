@@ -14,21 +14,31 @@
             <button class="back-to-home" onclick="window.location.href='Gerente.html'">Voltar</button>
         </div>
         <input type="text" id="filterInput" class="filter-input" placeholder="Filtrar linhas..." onkeyup="filterLinhas()">
-        <table>
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Tipo</th>
-                    <th>Tamanho</th>
-                    <th>Quantidade</th>
-                    <th>Estoque</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody id="linhaTableBody">
-                <!-- Linhas serão carregadas aqui dinamicamente -->
-            </tbody>
-        </table>
+        
+        <!-- Cabeçalho da tabela separado da área de rolagem -->
+        <div class="header-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">Nome</th>
+                        <th style="width: 15%;">Tipo</th>
+                        <th style="width: 15%;">Tamanho</th>
+                        <th style="width: 15%;">Quantidade</th>
+                        <th style="width: 15%;">Estoque</th>
+                        <th style="width: 20%;">Ações</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+
+        <!-- Corpo da tabela com rolagem -->
+        <div class="table-container">
+            <table>
+                <tbody id="linhaTableBody">
+                    <!-- Linhas serão carregadas aqui dinamicamente -->
+                </tbody>
+            </table>
+        </div>
 
         <!-- Modal para Adicionar/Editar Linhas -->
         <div id="addLinhaModal" class="modal">
@@ -108,6 +118,27 @@
                 }
                 rows[i].style.display = found ? '' : 'none'; // Mostra ou oculta a linha
             }
+        }
+
+        // Função para abrir o modal
+        function openModal() {
+            document.getElementById('addLinhaModal').style.display = 'block';
+        }
+
+        // Função para fechar o modal
+        function closeModal() {
+            document.getElementById('addLinhaModal').style.display = 'none';
+        }
+
+        // Função para fechar o modal de relatórios
+        function closeRelatorioModal() {
+            document.getElementById('relatorioModal').style.display = 'none';
+        }
+
+        // Função para salvar a linha (placeholder)
+        function saveLinha() {
+            alert('Linha salva com sucesso!');
+            closeModal();
         }
     </script>
 </body>

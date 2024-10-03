@@ -14,22 +14,26 @@
             <button class="back-to-home" onclick="window.location.href='Gerente.html'">Voltar</button>
         </div>
         <input type="text" id="filterInput" class="filter-input" placeholder="Filtrar pedidos...">
-        <table>
-            <thead>
-                <tr>
-                    <th>Nome (Contratante)</th>
-                    <th>Peça</th>
-                    <th>Quantidade</th>
-                    <th>Preço</th>
-                    <th>Data Recebido</th>
-                    <th>Data Vencimento</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody id="pedidoTableBody">
-                <!-- Pedidos serão carregados aqui dinamicamente -->
-            </tbody>
-        </table>
+        
+        <!-- Container para a tabela com rolagem -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome (Contratante)</th>
+                        <th>Peça</th>
+                        <th>Quantidade</th>
+                        <th>Preço</th>
+                        <th>Data Recebido</th>
+                        <th>Data Vencimento</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="pedidoTableBody">
+                    <!-- Pedidos serão carregados aqui dinamicamente -->
+                </tbody>
+            </table>
+        </div>
 
         <!-- Modal para Adicionar/Editar Pedidos -->
         <div id="addPedidoModal" class="modal">
@@ -47,11 +51,11 @@
                     </div>
                     <div class="form-group">
                         <label for="quantidade">Quantidade:</label>
-                        <input type="number" id="quantidade" required>
+                        <input type="number" id="quantidade" required min="1">
                     </div>
                     <div class="form-group">
                         <label for="preco">Preço:</label>
-                        <input type="number" id="preco" required>
+                        <input type="number" id="preco" required step="0.01" min="0">
                     </div>
                     <div class="form-group">
                         <label for="dataRecebido">Data Recebido:</label>
@@ -61,9 +65,11 @@
                         <label for="dataVencimento">Data Vencimento:</label>
                         <input type="date" id="dataVencimento" required>
                     </div>
-                    <button type="button" class="add-button" onclick="salvarPedido()">Salvar</button>
+                    <div class="modal-footer">
+                        <button type="button" class="add-button" onclick="salvarPedido()">Salvar</button>
+                        <button type="button" class="back-to-home" onclick="closeModal()">Voltar</button>
+                    </div>
                 </form>
-                <button class="back-to-home" onclick="closeModal()">Voltar</button>
             </div>
         </div>
     </div>
