@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Presença</title>
+    <link rel="stylesheet" href="../Css/Dias.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Controle de Presença - Dias Salvos</h1>
+        <div id="daysList">
+            <!-- A lista de dias será carregada aqui -->
+        </div>
+        <div id="presenceDetails">
+            <h2>Presenças do Dia</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Grupo</th>
+                        <th>Presença</th>
+                    </tr>
+                </thead>
+                <tbody id="presenceTableBody">
+                    <!-- A tabela de presenças será carregada aqui -->
+                </tbody>
+            </table>
+        </div>
+        <button class="back-btn" onclick="window.location.href='Gerente.html'">Voltar</button>
+    </div>
+
+    <script src="PresencaDias.js"></script> <!-- Arquivo JS que controla a lógica -->
+</body>
+</html>
