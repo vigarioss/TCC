@@ -9,54 +9,57 @@
 <body>
     <div class="container">
         <h1>Gestão de Gastos Gerais</h1>
-        
+
         <!-- Botão Voltar -->
         <a href="Gerente.html" class="back-button">Voltar</a>
 
-        <div class="form-container">
-            <form id="gastoForm">
-                <div class="form-group">
-                    <label for="descricao">Descrição:</label>
-                    <input type="text" id="descricao" required>
-                </div>
-                <div class="form-group">
-                    <label for="categoria">Categoria:</label>
-                    <select id="categoria" required>
-                        <option value="administrativo">Administrativo</option>
-                        <option value="aluguel">Aluguel</option>
-                        <option value="servicos">Serviços Públicos</option>
-                        <option value="outros">Outros</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="valor">Valor (R$):</label>
-                    <input type="number" id="valor" step="0.01" required>
-                </div>
-                <div class="form-group">
-                    <label for="data">Data:</label>
-                    <input type="date" id="data" required>
-                </div>
-                <button type="button" onclick="adicionarGasto()">Adicionar Gasto</button>
-            </form>
-        </div>
+        <!-- Formulário para Adicionar/Edição de Gasto -->
+        <form id="gastoForm">
+            <h2 id="formTitle">Adicionar Gasto</h2>
+            <input type="hidden" id="gastoId"> <!-- Campo oculto para edição -->
+            <div class="form-group">
+                <label for="descricao">Descrição:</label>
+                <input type="text" id="descricao" required>
+            </div>
+            <div class="form-group">
+                <label for="categoria">Categoria:</label>
+                <select id="categoria" required>
+                    <option value="administrativo">Administrativo</option>
+                    <option value="aluguel">Aluguel</option>
+                    <option value="servicos">Serviços Públicos</option>
+                    <option value="outros">Outros</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="valor">Valor (R$):</label>
+                <input type="number" id="valor" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="data">Data:</label>
+                <input type="date" id="data" required>
+            </div>
+            <button type="button" onclick="saveGasto()">Salvar Gasto</button>
+        </form>
 
+        <!-- Tabela de Gastos -->
         <h2>Relatório de Gastos</h2>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Descrição</th>
-                        <th>Categoria</th>
-                        <th>Valor (R$)</th>
-                        <th>Data</th>
-                    </tr>
-                </thead>
-                <tbody id="tabelaGastos">
-                    <!-- Linhas da tabela serão inseridas dinamicamente -->
-                </tbody>
-            </table>
-        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Categoria</th>
+                    <th>Valor (R$)</th>
+                    <th>Data</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="tabelaGastos">
+                <!-- Linhas da tabela serão inseridas dinamicamente -->
+            </tbody>
+        </table>
     </div>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+    <script src="../Js/app.js"></script>
     <script src="../Js/gastos.js"></script>
 </body>
 </html>

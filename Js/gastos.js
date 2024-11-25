@@ -1,61 +1,97 @@
-// Array para armazenar os gastos
-const gastos = [];
+// Variável global para armazenar o ID do gasto em edição
+let editId = null;
 
-// Função para adicionar um gasto
-function adicionarGasto() {
+// Função para carregar os gastos do Firebase
+function loadGastos() {
+    const tabelaGastos = document.getElementById('tabelaGastos');
+    tabelaGastos.innerHTML = ''; // Limpa a tabela antes de carregar os dados
+
+    firebase.database().ref('gastos').once('value', (snapshot) => {
+        snapshot.forEach((childSnapshot) => {
+            const gasto = childSnapshot.val();
+            const key = childSnapshot.key;
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${gasto.descricao}</td>
+                <td>${gasto.categoria}</td>
+                <td>${gasto.valor.toFixed(2)}</td>
+                <td>${gasto.data}</td>
+                <td>
+                    <button onclick="editGasto('${key}')">Editar</button>
+                    <button onclick="deleteGasto('${key}')">Excluir</button>
+                </td>
+            `;
+            tabelaGastos.appendChild(row);
+        });
+    });
+}
+
+// Função para salvar ou editar um gasto
+function saveGasto() {
     const descricao = document.getElementById('descricao').value;
     const categoria = document.getElementById('categoria').value;
     const valor = parseFloat(document.getElementById('valor').value);
     const data = document.getElementById('data').value;
 
-    // Validação simples
-    if (!descricao || !categoria || !valor || !data) {
-        alert("Por favor, preencha todos os campos.");
+    // Validação básica
+    if (!descricao || !categoria || isNaN(valor) || !data) {
+        alert('Preencha todos os campos corretamente.');
         return;
     }
 
-    // Adiciona o gasto ao array
-    gastos.push({ descricao, categoria, valor, data });
+    const gastoData = { descricao, categoria, valor, data };
 
-    // Limpa o formulário
-    document.getElementById('gastoForm').reset();
-
-    // Atualiza a tabela
-    atualizarTabela(gastos);
+    if (editId) {
+        // Edita um gasto existente
+        firebase.database().ref('gastos/' + editId).update(gastoData)
+            .then(() => {
+                alert('Gasto atualizado com sucesso!');
+                editId = null; // Reseta o ID de edição
+                document.getElementById('formTitle').textContent = 'Adicionar Gasto';
+                document.getElementById('gastoForm').reset(); // Reseta o formulário
+                loadGastos(); // Atualiza a tabela
+            })
+            .catch((error) => console.error('Erro ao atualizar o gasto:', error));
+    } else {
+        // Adiciona um novo gasto
+        firebase.database().ref('gastos').push(gastoData)
+            .then(() => {
+                alert('Gasto adicionado com sucesso!');
+                document.getElementById('gastoForm').reset(); // Reseta o formulário
+                loadGastos(); // Atualiza a tabela
+            })
+            .catch((error) => console.error('Erro ao salvar o gasto:', error));
+    }
 }
 
-// Função para atualizar a tabela de gastos
-function atualizarTabela(gastos) {
-    const tbody = document.getElementById('gastosTable').getElementsByTagName('tbody')[0];
-    tbody.innerHTML = '';
+// Função para carregar os dados de um gasto para edição
+function editGasto(key) {
+    editId = key; // Define o ID do gasto em edição
+    document.getElementById('formTitle').textContent = 'Editar Gasto';
 
-    gastos.forEach(gasto => {
-        const row = tbody.insertRow();
-        row.insertCell(0).innerText = gasto.descricao;
-        row.insertCell(1).innerText = gasto.categoria;
-        row.insertCell(2).innerText = gasto.valor.toFixed(2);
-        row.insertCell(3).innerText = gasto.data;
+    firebase.database().ref('gastos/' + key).once('value', (snapshot) => {
+        const gasto = snapshot.val();
+        document.getElementById('descricao').value = gasto.descricao;
+        document.getElementById('categoria').value = gasto.categoria;
+        document.getElementById('valor').value = gasto.valor;
+        document.getElementById('data').value = gasto.data;
     });
 }
 
-// Função para gerar relatório com filtros
-function gerarRelatorio() {
-    const categoriaFiltro = document.getElementById('categoriaFiltro').value;
-    const dataInicio = document.getElementById('dataInicio').value;
-    const dataFim = document.getElementById('dataFim').value;
-
-    // Filtra os gastos com base nos critérios selecionados
-    const gastosFiltrados = gastos.filter(gasto => {
-        const dataGasto = new Date(gasto.data);
-        const inicio = dataInicio ? new Date(dataInicio) : null;
-        const fim = dataFim ? new Date(dataFim) : null;
-
-        return (
-            (categoriaFiltro === 'Todas' || gasto.categoria === categoriaFiltro) &&
-            (!inicio || dataGasto >= inicio) &&
-            (!fim || dataGasto <= fim)
-        );
-    });
-
-    atualizarTabela(gastosFiltrados);
+// Função para excluir um gasto
+function deleteGasto(key) {
+    if (confirm('Tem certeza que deseja excluir este gasto?')) {
+        firebase.database().ref('gastos/' + key).remove()
+            .then(() => {
+                alert('Gasto excluído com sucesso!');
+                loadGastos(); // Atualiza a tabela
+            })
+            .catch((error) => console.error('Erro ao excluir o gasto:', error));
+    }
 }
+
+// Chama a função para carregar os gastos ao abrir a página
+window.onload = function () {
+    loadGastos();
+};
